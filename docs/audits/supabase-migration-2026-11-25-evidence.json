@@ -1,0 +1,742 @@
+{
+  "sourceRef": "pbfdnjtkeveqeukbrfmk",
+  "targetRef": "ccqotqrmzsnizychoggp",
+  "verifiedAt": "2026-11-25T10:52:30.199Z",
+  "snapshot": {
+    "sourceRef": "pbfdnjtkeveqeukbrfmk",
+    "targetRef": "ccqotqrmzsnizychoggp",
+    "exportedAt": "2026-11-25T10:50:40.811Z",
+    "snapshot": "00000021-0001D77E-1",
+    "tables": 61
+  },
+  "data": {
+    "tables": 61,
+    "mismatches": [],
+    "fingerprints": [
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "auth.audit_log_entries"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "auth.custom_oauth_providers"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "auth.flow_state"
+      },
+      {
+        "hash": "78f72ba5719f8c0283aee0961ccc9d08",
+        "count": 91,
+        "table_name": "auth.identities"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "auth.instances"
+      },
+      {
+        "hash": "23e40d18d970357cba3e29f47d9f1943",
+        "count": 75,
+        "table_name": "auth.mfa_amr_claims"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "auth.mfa_challenges"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "auth.mfa_factors"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "auth.mfa_recovery_code_sets"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "auth.mfa_recovery_codes"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "auth.oauth_authorizations"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "auth.oauth_client_states"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "auth.oauth_clients"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "auth.oauth_consents"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "auth.one_time_tokens"
+      },
+      {
+        "hash": "dfdc106e4358d615823c5b26c608fdb3",
+        "count": 6207,
+        "table_name": "auth.refresh_tokens"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "auth.saml_providers"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "auth.saml_relay_states"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "auth.scim_tokens"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "auth.scim_users"
+      },
+      {
+        "hash": "a094332b0ad02591d48154bbb40d9bf4",
+        "count": 75,
+        "table_name": "auth.sessions"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "auth.sso_domains"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "auth.sso_providers"
+      },
+      {
+        "hash": "cddfae18bb87e3c6ba76211b5972360e",
+        "count": 91,
+        "table_name": "auth.users"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "auth.webauthn_challenges"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "auth.webauthn_credentials"
+      },
+      {
+        "hash": "95555701ddfc06724bdc96ee8dc03782",
+        "count": 38,
+        "table_name": "public.account_auth_attempts"
+      },
+      {
+        "hash": "91b3df960764bd1e65c704c33ca5f296",
+        "count": 12,
+        "table_name": "public.agent_signup_codes"
+      },
+      {
+        "hash": "8b29a2f1f5cc1686188cb9e4888d5c4c",
+        "count": 19,
+        "table_name": "public.case_timeline"
+      },
+      {
+        "hash": "090523cf26d73417c821543ec36c2a3f",
+        "count": 5,
+        "table_name": "public.client_payment_details"
+      },
+      {
+        "hash": "8a84779f8a96fe07610407bc433f81bf",
+        "count": 4,
+        "table_name": "public.crypto_balance_adjustments"
+      },
+      {
+        "hash": "9241227f468da85d9d3b608f12f34adb",
+        "count": 273,
+        "table_name": "public.customer_balances"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "public.customer_notes"
+      },
+      {
+        "hash": "64cc91ccf76a435ae99eeef0e1cc777e",
+        "count": 5,
+        "table_name": "public.groups"
+      },
+      {
+        "hash": "9dbf108ac5657a6ac2e85a0dfb0bdc05",
+        "count": 88,
+        "table_name": "public.ip_validation_logs"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "public.ip_whitelist"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "public.kyc_submissions"
+      },
+      {
+        "hash": "fa243791c5925681ee3f96a82838d423",
+        "count": 7,
+        "table_name": "public.messages"
+      },
+      {
+        "hash": "26c76135dfb5b74b53fa0eb5b07f3162",
+        "count": 99,
+        "table_name": "public.notifications"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "public.password_reset_requests"
+      },
+      {
+        "hash": "f81475237bca2be3b16f30c28202ba1d",
+        "count": 4,
+        "table_name": "public.portfolio_items"
+      },
+      {
+        "hash": "396c046c750f8f9eb095d3f4b6700192",
+        "count": 91,
+        "table_name": "public.profiles"
+      },
+      {
+        "hash": "c52db56f708de8519fa9aec80f3dbaa5",
+        "count": 11,
+        "table_name": "public.promocodes"
+      },
+      {
+        "hash": "08b88874d6189fc8b0e09e5c1f064232",
+        "count": 4,
+        "table_name": "public.recovery_funds"
+      },
+      {
+        "hash": "2d67a20f5bac3409d3900b19c9270c12",
+        "count": 1,
+        "table_name": "public.role_permission_changes"
+      },
+      {
+        "hash": "93460c9d6e36e8f34b8ad668da8cd3af",
+        "count": 3,
+        "table_name": "public.role_permissions"
+      },
+      {
+        "hash": "cad2b5215a162a3a4a67c2c9b984638f",
+        "count": 17,
+        "table_name": "public.transaction_requests"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "public.user_mfa"
+      },
+      {
+        "hash": "134b2e42f160c0e6903d2c2fc97910c0",
+        "count": 18,
+        "table_name": "public.user_roles"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "public.user_sessions"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "public.watchlist_items"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "storage.bucket_lifecycle_states"
+      },
+      {
+        "hash": "935796c7f073e6953c7ee189716d844e",
+        "count": 2,
+        "table_name": "storage.buckets"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "storage.buckets_analytics"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "storage.buckets_vectors"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "storage.lifecycle_abandoned_artifacts"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "storage.objects"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "storage.s3_multipart_uploads"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "storage.s3_multipart_uploads_parts"
+      },
+      {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "count": 0,
+        "table_name": "storage.vector_indexes"
+      },
+      {
+        "hash": "3fd375a90c10495cf3219f90aa2736cf",
+        "count": 79,
+        "table_name": "supabase_migrations.schema_migrations"
+      }
+    ]
+  },
+  "migrationHistory": {
+    "originalRecordsPreserved": 79,
+    "previouslyAppliedRecordsAdded": 11,
+    "totalRecords": 90,
+    "noHistoricalSqlReplayed": true
+  },
+  "catalog": {
+    "tables": {
+      "match": true,
+      "sourceCount": 25,
+      "targetCount": 25
+    },
+    "columns": {
+      "match": true,
+      "sourceCount": 252,
+      "targetCount": 252
+    },
+    "functions": {
+      "match": true,
+      "sourceCount": 67,
+      "targetCount": 67
+    },
+    "policies": {
+      "match": true,
+      "sourceCount": 169,
+      "targetCount": 169,
+      "notes": [
+        "PostgreSQL AST comparison confirms equivalent policies; associative OR parentheses normalize on restore."
+      ]
+    },
+    "triggers": {
+      "match": true,
+      "sourceCount": 38,
+      "targetCount": 38
+    },
+    "constraints": {
+      "match": true,
+      "sourceCount": 102,
+      "targetCount": 102
+    },
+    "indexes": {
+      "match": true,
+      "sourceCount": 57,
+      "targetCount": 57
+    },
+    "types": {
+      "match": true,
+      "sourceCount": 21,
+      "targetCount": 21
+    },
+    "tableGrants": {
+      "match": true,
+      "sourceCount": 708,
+      "targetCount": 708
+    },
+    "functionGrants": {
+      "match": true,
+      "sourceCount": 209,
+      "targetCount": 209
+    },
+    "defaultGrants": {
+      "match": true,
+      "sourceCount": 96,
+      "targetCount": 96
+    },
+    "publications": {
+      "match": true,
+      "sourceCount": 13,
+      "targetCount": 13
+    },
+    "extensions": {
+      "match": true,
+      "sourceCount": 5,
+      "targetCount": 5,
+      "notes": [
+        {
+          "managedVersionDifferences": [
+            {
+              "name": "supabase_vault",
+              "source": "0.3.1",
+              "target": "0.3.2"
+            }
+          ]
+        }
+      ]
+    },
+    "sequences": {
+      "match": true,
+      "sourceCount": 2,
+      "targetCount": 2,
+      "notes": [
+        "Sequence values compared with the exported snapshot; the original project remains active."
+      ]
+    }
+  },
+  "configs": {
+    "/config/auth": {
+      "differences": []
+    },
+    "/config/realtime": {
+      "differences": []
+    },
+    "/postgrest": {
+      "differences": [
+        "jwt_secret"
+      ]
+    },
+    "/config/storage": {
+      "differences": [
+        "migrationVersion"
+      ]
+    },
+    "/ssl-enforcement": {
+      "differences": []
+    },
+    "/network-restrictions": {
+      "differences": [
+        "applied_at"
+      ]
+    }
+  },
+  "status": "superseded_by_admin_only_cleanup",
+  "cutoverScope": "Local workspace only. User explicitly excluded website deployment.",
+  "counts": {
+    "users": 91,
+    "identities": 91,
+    "profiles": 91,
+    "buckets": 2,
+    "objects": 0,
+    "migration_records": 90
+  },
+  "edgeFunctions": [
+    {
+      "slug": "validate-staff-ip",
+      "status": "ACTIVE",
+      "exactBundleMatch": true,
+      "sha256": "45c854c040c352447bb35515ae25d0c70087408d65f2872a4b53f10a83839085",
+      "verifyJwtMatches": true
+    },
+    {
+      "slug": "confiscate-brightfund-staff",
+      "status": "ACTIVE",
+      "exactBundleMatch": true,
+      "sha256": "9a8d3a6a246c6e4ea99fdf38e764ec0982556d930c13528af6e1f091f9a6b5b2",
+      "verifyJwtMatches": true
+    },
+    {
+      "slug": "reset-user-password",
+      "status": "ACTIVE",
+      "exactBundleMatch": true,
+      "sha256": "f04d431caf38318c2c836cd31d9d8e1036e2089eb1cfdaf06082b9420e77f8f4",
+      "verifyJwtMatches": true
+    },
+    {
+      "slug": "seed-extra-admin",
+      "status": "ACTIVE",
+      "exactBundleMatch": true,
+      "sha256": "a0a40cc4d64fbde55ee90d1981516c4605a9dec027f511f2960be198fa57b4b1",
+      "verifyJwtMatches": true
+    },
+    {
+      "slug": "delete-user",
+      "status": "ACTIVE",
+      "exactBundleMatch": true,
+      "sha256": "f440d983392beaacc08041e60cf69f891a2863935bf5b66f808c9a6f339d7ba0",
+      "verifyJwtMatches": true
+    },
+    {
+      "slug": "purge-customers",
+      "status": "ACTIVE",
+      "exactBundleMatch": true,
+      "sha256": "570bd7bfbc83b174419f8e2d9906804626d7d9342359f97958bac19bf75990b2",
+      "verifyJwtMatches": true
+    },
+    {
+      "slug": "seed-tk-extra-agents",
+      "status": "ACTIVE",
+      "exactBundleMatch": true,
+      "sha256": "0410ebb1a1b35e7561fc3520145c3a485378985778e16a351c21266115187733",
+      "verifyJwtMatches": true
+    },
+    {
+      "slug": "seed-tk-group",
+      "status": "ACTIVE",
+      "exactBundleMatch": true,
+      "sha256": "09a4222399363ed3777a9201e9e35e8a0f635960c697114f3a8dba4b6f1a90df",
+      "verifyJwtMatches": true
+    },
+    {
+      "slug": "mfa-check",
+      "status": "ACTIVE",
+      "exactBundleMatch": true,
+      "sha256": "eacbafc3c1b282aa2406696f5977ab7d131ebd6784e26ffaa202f962325102c7",
+      "verifyJwtMatches": true
+    },
+    {
+      "slug": "register-client",
+      "status": "ACTIVE",
+      "exactBundleMatch": true,
+      "sha256": "2f09c0a1389661566ed1e5a20bb8876f16ab2152963be1acfb5f88709ee6e188",
+      "verifyJwtMatches": true
+    },
+    {
+      "slug": "approve-password-reset",
+      "status": "ACTIVE",
+      "exactBundleMatch": true,
+      "sha256": "1ca9d9330f10ad068306bba5e83ef98b86dca97935685015019f14cc50096c5b",
+      "verifyJwtMatches": true
+    },
+    {
+      "slug": "create-user",
+      "status": "ACTIVE",
+      "exactBundleMatch": true,
+      "sha256": "413b2aebb1355583bed5ea8765ce97dbc502a7aaf8bbe4cd3a5a85ade383714a",
+      "verifyJwtMatches": true
+    },
+    {
+      "slug": "seed-zyra-group",
+      "status": "ACTIVE",
+      "exactBundleMatch": true,
+      "sha256": "8871e03fd4429f2b75d1b9598267b1d3813d55762107b5155926f98a50955276",
+      "verifyJwtMatches": true
+    },
+    {
+      "slug": "crypto-data",
+      "status": "ACTIVE",
+      "exactBundleMatch": true,
+      "sha256": "363978cf7d5cf34e0ba9b959827f77ea086acbee14eca2b3cf3e242420f1abf6",
+      "verifyJwtMatches": true
+    },
+    {
+      "slug": "update-staff-credentials",
+      "status": "ACTIVE",
+      "exactBundleMatch": true,
+      "sha256": "4def5de195599547ea84e31828018ff33ba422332be552704cd63a1901db67e7",
+      "verifyJwtMatches": true
+    },
+    {
+      "slug": "mfa-setup",
+      "status": "ACTIVE",
+      "exactBundleMatch": true,
+      "sha256": "e091b03c6b1a0584e9347beed2b46f611f103646d7a6865163e94bbd94c92822",
+      "verifyJwtMatches": true
+    },
+    {
+      "slug": "account-login",
+      "status": "ACTIVE",
+      "exactBundleMatch": true,
+      "sha256": "1d4983a526d6fe3927ba3438e2f93e40f2d7d48e3c9dcf538e735136bb0d3de5",
+      "verifyJwtMatches": true
+    },
+    {
+      "slug": "delete-tk-agents",
+      "status": "ACTIVE",
+      "exactBundleMatch": true,
+      "sha256": "d4a55f341efbb2ac421d0bc81ae31e071ac601e2ee10095d032e1aa947ab45c6",
+      "verifyJwtMatches": true
+    },
+    {
+      "slug": "mfa-validate",
+      "status": "ACTIVE",
+      "exactBundleMatch": true,
+      "sha256": "258b851c5c2a4aeedba7d6f217694a661eb7752fcfbcde704cf9a8b190bb5c9b",
+      "verifyJwtMatches": true
+    },
+    {
+      "slug": "seed-demo-accounts",
+      "status": "ACTIVE",
+      "exactBundleMatch": true,
+      "sha256": "40677cee5b43bcbfeccbb96c0e93b535622ee27242d61a02e659e49379b6b14a",
+      "verifyJwtMatches": true
+    },
+    {
+      "slug": "temp-set-password",
+      "status": "ACTIVE",
+      "exactBundleMatch": true,
+      "sha256": "f6caeadb196357fc8d6d2de803c12ea491fffe8a0f57607220e8e3e77abe1d71",
+      "verifyJwtMatches": true
+    }
+  ],
+  "httpSmoke": {
+    "registration": {
+      "status": 200,
+      "sessionCreated": true
+    },
+    "login": {
+      "status": 200,
+      "sameUser": true,
+      "jwtAlgorithm": "ES256"
+    },
+    "clientRls": {
+      "status": 200,
+      "onlyOwnProfile": true
+    },
+    "anonymousRls": {
+      "status": 200,
+      "noProfilesExposed": true
+    },
+    "authenticatedEdgeFunction": {
+      "status": 200,
+      "body": {
+        "mfaRequired": false,
+        "isAdminRole": false
+      }
+    },
+    "market": {
+      "status": 200,
+      "priceReturned": true
+    },
+    "cleanedUp": true
+  },
+  "liveRoleChecks": [
+    {
+      "case_transfer_verified": true,
+      "writes_rolled_back": true
+    }
+  ],
+  "realtime": {
+    "subscribed": true,
+    "table": "public.profiles"
+  },
+  "build": {
+    "builtWithNewProject": true,
+    "oldProjectInBuild": false,
+    "privateCredentialsInBuild": false,
+    "vercelConfigRemoved": true
+  },
+  "services": [
+    {
+      "name": "auth",
+      "healthy": true,
+      "status": "ACTIVE_HEALTHY",
+      "info": {
+        "name": "GoTrue",
+        "version": "v2.198.0",
+        "description": "GoTrue is a user registration and authentication API"
+      }
+    },
+    {
+      "name": "rest",
+      "healthy": true,
+      "status": "ACTIVE_HEALTHY",
+      "info": {
+        "db_schema": "public,graphql_public"
+      }
+    },
+    {
+      "name": "storage",
+      "healthy": true,
+      "status": "ACTIVE_HEALTHY"
+    },
+    {
+      "name": "realtime",
+      "healthy": true,
+      "status": "ACTIVE_HEALTHY",
+      "info": {
+        "healthy": true,
+        "db_connected": false,
+        "replication_connected": false,
+        "connected_cluster": 0,
+        "node": "realtime@2a05:d018:16ce:3908:6950:a085:f034:bf82",
+        "region": "eu-west-1"
+      }
+    }
+  ],
+  "edgeSecrets": {
+    "customSource": [],
+    "targetBuiltinNames": [
+      "SUPABASE_URL",
+      "SUPABASE_ANON_KEY",
+      "SUPABASE_SERVICE_ROLE_KEY",
+      "SUPABASE_PUBLISHABLE_KEYS",
+      "SUPABASE_SECRET_KEYS",
+      "SUPABASE_DB_URL",
+      "SUPABASE_JWKS"
+    ]
+  },
+  "validation": {
+    "backendTests": 196,
+    "failedTests": 0,
+    "typecheck": "passed",
+    "productionBuild": "passed",
+    "migrationDryRun": {
+      "upToDate": true,
+      "pendingMigrations": 0
+    }
+  },
+  "changes": {
+    "workspaceEnvironment": "Updated .env with the new URL, project ID, publishable key and target legacy anon key for the server proxy. No administrative key stored in project files.",
+    "supabaseProject": "ccqotqrmzsnizychoggp",
+    "vercel": "Removed local vercel.json at user request. No website deployment performed.",
+    "migrationCollision": "Renamed staff_auth_email_sync to 20261123140100 and updated the existing test reference.",
+    "migrationHistory": "Kept all 79 original records and added 11 records for changes already present in the live schema, without replaying historical SQL.",
+    "credentialProtection": "Ignored .env and Supabase CLI temporary files. Management tokens and secret API keys kept outside the repository."
+  },
+  "backup": {
+    "directory": "C:\\Users\\3\\AppData\\Local\\reczk2\\supabase-backups\\2026-11-25-ccqotqrmzsnizychoggp-105230",
+    "permissions": "Current Windows user and SYSTEM only",
+    "contains": [
+      "Schema and data snapshot including Auth password hashes",
+      "Custom Auth triggers and Storage policies",
+      "Original deployed function bundles with resolved dependencies",
+      "Encryption root key",
+      "Original environment and Vercel configuration"
+    ]
+  },
+  "sourceProject": "Original project retained and its application data was not modified.",
+  "notes": [
+    "Two private Storage buckets contain zero objects; there were no file binaries to transfer.",
+    "The target uses its own API keys and JWT signing keys; users sign in again when they begin using the new project.",
+    "Platform-managed Supabase Vault extension is 0.3.2 on the target versus 0.3.1 on the source; no Vault secrets exist.",
+    "Internal Storage migration versions and network-configuration application timestamps are platform-specific."
+  ],
+  "currentState": {
+    "users": 1,
+    "profiles": 1,
+    "copiedBusinessData": "removed",
+    "evidence": "supabase-admin-only-2026-11-25-evidence.json"
+  }
+}

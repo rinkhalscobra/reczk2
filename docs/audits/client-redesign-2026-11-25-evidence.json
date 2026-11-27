@@ -1,0 +1,305 @@
+{
+  "completedAt": "2026-11-25T13:28:08.261Z",
+  "scope": "Complete client-facing visual and layout rebuild; CRM preserved; local workspace only",
+  "direction": "Graphite and mint, split authentication canvas, horizontal desktop navigation and mobile bottom navigation",
+  "screens": [
+    "Login",
+    "Sign up",
+    "Overview",
+    "Wallet",
+    "Transactions",
+    "Case and verification documents",
+    "Deposit",
+    "Withdraw",
+    "Messages",
+    "Notifications",
+    "Watchlist",
+    "Located funds"
+  ],
+  "changedSourceFiles": [
+    "src/components/client/PortalBrand.tsx",
+    "src/components/client/TransferLayout.tsx",
+    "src/components/dashboard/BalanceCard.tsx",
+    "src/components/dashboard/CaseStatusCard.tsx",
+    "src/components/dashboard/CaseTimeline.tsx",
+    "src/components/dashboard/DashboardLayout.tsx",
+    "src/components/dashboard/DashboardPageHeader.tsx",
+    "src/components/dashboard/DepositForm.tsx",
+    "src/components/dashboard/RecentActivityCard.tsx",
+    "src/components/dashboard/RecoveryInvestigationPanel.tsx",
+    "src/components/dashboard/TransactionList.tsx",
+    "src/components/dashboard/WithdrawForm.tsx",
+    "src/i18n/clientExperience.ts",
+    "src/main.tsx",
+    "src/pages/Auth.tsx",
+    "src/pages/dashboard/case.tsx",
+    "src/pages/dashboard/deposit.tsx",
+    "src/pages/dashboard/funds.tsx",
+    "src/pages/dashboard/index.tsx",
+    "src/pages/dashboard/messages.tsx",
+    "src/pages/dashboard/notifications.tsx",
+    "src/pages/dashboard/transactions.tsx",
+    "src/pages/dashboard/wallet.tsx",
+    "src/pages/dashboard/withdraw.tsx",
+    "src/pages/WatchlistNew.tsx",
+    "src/styles/client-experience.css"
+  ],
+  "crm": {
+    "protectedSourceFiles": 94,
+    "changedSourceFiles": [],
+    "renderedTheme": {
+      "interface": "crm",
+      "primary": "216 55% 29%",
+      "background": "rgb(252, 252, 253)"
+    }
+  },
+  "verification": {
+    "typecheck": "passed",
+    "productionBuild": "passed",
+    "browserRegressionTests": {
+      "passed": 23,
+      "failed": 0,
+      "coverage": [
+        "Client registration and case capitalization",
+        "Authentication and MFA",
+        "Staff sign-in and role routing",
+        "Realtime case and transaction status updates",
+        "Shared data caching",
+        "Original CRM dialog appearance"
+      ]
+    },
+    "responsiveChecks": [
+      {
+        "route": "/auth?mode=signup",
+        "width": 320,
+        "overflow": false
+      },
+      {
+        "route": "/auth?mode=signup",
+        "width": 390,
+        "overflow": false
+      },
+      {
+        "route": "/auth?mode=signup",
+        "width": 768,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard",
+        "width": 320,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/wallet",
+        "width": 320,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/transactions",
+        "width": 320,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/case",
+        "width": 320,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/deposit",
+        "width": 320,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/withdraw",
+        "width": 320,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/messages",
+        "width": 320,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/notifications",
+        "width": 320,
+        "overflow": false
+      },
+      {
+        "route": "/watchlist",
+        "width": 320,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/funds",
+        "width": 320,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard",
+        "width": 390,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/wallet",
+        "width": 390,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/transactions",
+        "width": 390,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/case",
+        "width": 390,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/deposit",
+        "width": 390,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/withdraw",
+        "width": 390,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/messages",
+        "width": 390,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/notifications",
+        "width": 390,
+        "overflow": false
+      },
+      {
+        "route": "/watchlist",
+        "width": 390,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/funds",
+        "width": 390,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard",
+        "width": 768,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/wallet",
+        "width": 768,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/transactions",
+        "width": 768,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/case",
+        "width": 768,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/deposit",
+        "width": 768,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/withdraw",
+        "width": 768,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/messages",
+        "width": 768,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/notifications",
+        "width": 768,
+        "overflow": false
+      },
+      {
+        "route": "/watchlist",
+        "width": 768,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/funds",
+        "width": 768,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard",
+        "width": 1024,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/wallet",
+        "width": 1024,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/transactions",
+        "width": 1024,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/case",
+        "width": 1024,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/deposit",
+        "width": 1024,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/withdraw",
+        "width": 1024,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/messages",
+        "width": 1024,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/notifications",
+        "width": 1024,
+        "overflow": false
+      },
+      {
+        "route": "/watchlist",
+        "width": 1024,
+        "overflow": false
+      },
+      {
+        "route": "/dashboard/funds",
+        "width": 1024,
+        "overflow": false
+      }
+    ],
+    "interactiveChecks": {
+      "currencySwitching": true,
+      "passwordVisibility": true,
+      "transferMethodSelection": true,
+      "mobileNavigation": true
+    },
+    "browserErrors": []
+  },
+  "databaseChanges": false,
+  "deployed": false,
+  "preview": "http://localhost:8081/auth",
+  "screenshots": "test-results/client-redesign/",
+  "notes": [
+    "Browser previews use isolated mocked account data. No client accounts or balances were added to Supabase.",
+    "CSS variables are scoped to authentication and client routes; the original CRM stylesheet and CRM components are unchanged.",
+    "Case findings and configured timing use the existing case fields. Decorative simulated risk counts were replaced with the actual case status and published evidence."
+  ]
+}

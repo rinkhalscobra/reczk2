@@ -1,0 +1,33 @@
+{
+  "date": "2026-11-25",
+  "scope": "Platform translations; local changes only",
+  "messageCounts": {
+    "en": 930,
+    "fr": 930,
+    "de": 930,
+    "it": 930
+  },
+  "referencedKeys": 462,
+  "missingMessages": [],
+  "localeParityIssues": [],
+  "interpolationIssues": [],
+  "unresolvedDynamicPrefixes": [],
+  "addedLocalizedEntries": 93,
+  "browserChecks": 48,
+  "browserLanguages": 4,
+  "visibleTranslationKeys": [],
+  "browserErrors": [],
+  "signOutLabels": {
+    "en": "Sign Out",
+    "fr": "Déconnexion",
+    "de": "Abmelden",
+    "it": "Esci"
+  },
+  "validation": {
+    "translationRegressionTests": 5,
+    "typescript": "passed",
+    "productionBuild": "passed"
+  },
+  "deploymentPerformed": false,
+  "databaseChanges": false
+}

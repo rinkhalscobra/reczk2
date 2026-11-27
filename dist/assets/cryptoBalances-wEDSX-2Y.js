@@ -1,0 +1,1 @@
+const m=[{id:"btc",symbol:"BTC",name:"Bitcoin"},{id:"eth",symbol:"ETH",name:"Ethereum"},{id:"usdt",symbol:"USDT",name:"Tether"}],o=(t,i)=>`${Number(t).toLocaleString(void 0,{minimumFractionDigits:0,maximumFractionDigits:8})} ${i.toUpperCase()}`;export{m as C,o as f};

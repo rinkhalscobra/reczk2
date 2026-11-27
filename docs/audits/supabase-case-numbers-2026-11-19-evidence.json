@@ -1,0 +1,109 @@
+{
+  "project": "pbfdnjtkeveqeukbrfmk",
+  "date": "2026-11-19",
+  "appliedMigrations": [
+    "20261118120000",
+    "20261118130000",
+    "20261118140000"
+  ],
+  "reconciledExistingMigration": "20261113120000",
+  "pendingMigrations": [],
+  "baseline": {
+    "authUsers": 41,
+    "profiles": 41,
+    "roles": 13,
+    "balances": 123
+  },
+  "final": {
+    "authUsers": 41,
+    "profiles": 41,
+    "roles": 13,
+    "balances": 123
+  },
+  "balancesPreserved": true,
+  "missingCases": 0,
+  "duplicateCases": 0,
+  "loginMappingMismatches": 0,
+  "caseConstraintValid": true,
+  "caseIndexValid": true,
+  "anonymousCaseAllocatorAccess": false,
+  "anonymousRateRpcAccess": false,
+  "browserRateTableAccess": false,
+  "functions": [
+    {
+      "name": "register-client",
+      "version": 1,
+      "status": "ACTIVE",
+      "verify_jwt": false
+    },
+    {
+      "name": "mfa-validate",
+      "version": 2,
+      "status": "ACTIVE",
+      "verify_jwt": true
+    },
+    {
+      "name": "create-user",
+      "version": 3,
+      "status": "ACTIVE",
+      "verify_jwt": true
+    },
+    {
+      "name": "mfa-check",
+      "version": 2,
+      "status": "ACTIVE",
+      "verify_jwt": true
+    },
+    {
+      "name": "account-login",
+      "version": 1,
+      "status": "ACTIVE",
+      "verify_jwt": false
+    },
+    {
+      "name": "mfa-setup",
+      "version": 2,
+      "status": "ACTIVE",
+      "verify_jwt": true
+    },
+    {
+      "name": "validate-staff-ip",
+      "version": 2,
+      "status": "ACTIVE",
+      "verify_jwt": true
+    }
+  ],
+  "liveVerification": {
+    "checkedAt": "2026-11-19T09:12:54.187Z",
+    "project": "pbfdnjtkeveqeukbrfmk",
+    "checks": [
+      "Production database can be read for verification",
+      "First case registration succeeds",
+      "Second registration with the same email succeeds",
+      "Shared email registrations create independent accounts",
+      "Email, first case number and password open the first account",
+      "The same email and password with the second case open the second account",
+      "Duplicate email and case registration is rejected",
+      "An incorrect case cannot open another account",
+      "Client profile shows the normal email and assigned case",
+      "One case cannot read the other case profile",
+      "Authenticated client access passes the deployed location check",
+      "Staff creation allocates a case number for another account sharing the email",
+      "The automatically allocated case can sign in",
+      "Staff password reset targets the selected second case",
+      "The second case accepts its changed password",
+      "The second case rejects its old password",
+      "The first case keeps its original password"
+    ],
+    "cleanup": {
+      "temporaryAccountsRemoved": 3,
+      "remainingTemporaryProfiles": 0
+    }
+  },
+  "hostedFrontend": {
+    "url": "https://www.clientzone.space/auth",
+    "updatedBuildDeployed": false,
+    "caseFieldsPresent": false,
+    "usesAccountLoginFunction": false
+  }
+}

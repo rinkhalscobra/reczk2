@@ -1,0 +1,56 @@
+{
+  "date": "2026-11-27",
+  "scope": "Shared theme for authentication, client portal, public layout and all CRM roles",
+  "palette": {
+    "surfaces": "Neutral charcoal and gray",
+    "accent": "Restrained blue",
+    "blockchainRoute": "Muted violet",
+    "green": "Small semantic success/status indicators"
+  },
+  "replacedHardcodedGreenColorOccurrences": 333,
+  "changes": [
+    "Shared global HSL tokens for app surfaces and portalled components",
+    "Neutralized client page, card, border, typography, navigation and authentication colors",
+    "Recolored the animated banking and blockchain workflow",
+    "Matched CRM cards, tables, inputs, dialogs and dropdowns to the shared palette",
+    "Removed green decoration from the shared located-funds panel"
+  ],
+  "validation": {
+    "screenAndMenuChecks": 39,
+    "viewportWidths": [
+      1440,
+      390
+    ],
+    "crmRoles": [
+      "admin",
+      "group_admin",
+      "supervisor",
+      "agent"
+    ],
+    "bodyTextContrast": "greater than 7:1 on checked screens",
+    "primaryButtonContrast": "greater than 4.5:1",
+    "crmDialogContrast": "greater than 7:1",
+    "portalledDropdown": {
+      "role": "admin",
+      "route": "create client Group dropdown",
+      "background": "rgb(30, 32, 36)",
+      "color": "rgb(238, 239, 242)",
+      "scheme": "dark",
+      "result": "passed"
+    },
+    "automaticCrmAnimationTests": 2,
+    "typescript": "passed",
+    "productionBuild": "passed",
+    "browserErrors": [],
+    "realBackendWrites": 0
+  },
+  "deploymentPerformed": false,
+  "databaseChanges": false,
+  "artifacts": {
+    "client": "test-results/neutral-theme/overview-1440.png",
+    "authentication": "test-results/neutral-theme/auth-1440.png",
+    "crm": "test-results/neutral-theme/crm-admin-1440.png",
+    "dialog": "test-results/neutral-theme/crm-dialog-390.png",
+    "dropdown": "test-results/neutral-theme/crm-dropdown.png"
+  }
+}

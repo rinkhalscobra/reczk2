@@ -1,0 +1,66 @@
+{
+  "project_ref": "pbfdnjtkeveqeukbrfmk",
+  "database_deployment": {
+    "version": "20261112141232",
+    "name": "promocode_agent_assignment",
+    "migration_count": 73,
+    "sql_sha256": "dcd8d2bb3dd92eb55df8530e993648a3709a3b0561abd3daed88bfc892181285"
+  },
+  "live_auth_verification": {
+    "verified_at_utc": "2026-11-12T14:13:24.640136+00:00",
+    "before": {
+      "auth_users": 10,
+      "profiles": 10,
+      "roles": 5,
+      "balances": 30,
+      "agent_codes": 3,
+      "promocodes": 0
+    },
+    "authenticated_admin_created_agent_code_without_group": true,
+    "public_code_validation": true,
+    "auth_registration_assigned_selected_agent": true,
+    "registration_remains_customer_role": true,
+    "blank_code_registration_unassigned": true,
+    "usage_count_incremented": true,
+    "exhausted_code_rejected": true,
+    "cleanup": [
+      {
+        "operation": "delete_temporary_promocode",
+        "status": 204
+      },
+      {
+        "operation": "remove_temporary_admin_role",
+        "status": 204
+      },
+      {
+        "operation": "delete_temporary_account",
+        "status": 200
+      },
+      {
+        "operation": "delete_temporary_account",
+        "status": 200
+      },
+      {
+        "operation": "delete_temporary_account",
+        "status": 200
+      }
+    ],
+    "after": {
+      "auth_users": 10,
+      "profiles": 10,
+      "roles": 5,
+      "balances": 30,
+      "agent_codes": 3,
+      "promocodes": 0
+    },
+    "counts_restored": true,
+    "all_passed": true
+  },
+  "automated_checks": {
+    "backend_tests_passed": 83,
+    "browser_tests_passed": 45,
+    "typescript": "passed",
+    "changed_source_eslint": "passed",
+    "production_build": "passed"
+  }
+}

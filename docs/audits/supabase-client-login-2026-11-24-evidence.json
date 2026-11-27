@@ -1,0 +1,61 @@
+{
+  "date": "2026-11-24",
+  "project_ref": "pbfdnjtkeveqeukbrfmk",
+  "root_cause": "Deployed account-login version 2 uppercased case input and then required an exact database match against a mixed-case saved identifier.",
+  "deployment": [
+    {
+      "function": "account-login",
+      "version": 3,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "case_insensitive_lookup": true,
+      "old_exact_case_lookup": false,
+      "old_uppercase_input_normalizer": false
+    },
+    {
+      "function": "register-client",
+      "version": 3,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "case_insensitive_lookup": true,
+      "old_exact_case_lookup": false,
+      "old_uppercase_input_normalizer": false
+    }
+  ],
+  "live_verification": {
+    "temporary_client_logins": [
+      {
+        "case": "Case@551",
+        "status": 200,
+        "correct_account": true
+      },
+      {
+        "case": "CASE@551",
+        "status": 200,
+        "correct_account": true
+      },
+      {
+        "case": "case@551",
+        "status": 200,
+        "correct_account": true
+      }
+    ],
+    "incorrect_case_status": 401,
+    "temporary_accounts_deleted": true,
+    "temporary_auth_profile_and_balance_rows_remaining": 0
+  },
+  "original_client": {
+    "saved_case_matches": true,
+    "auth_link_valid": true,
+    "email_confirmed": true,
+    "auth_blocked": false,
+    "password_changed": false,
+    "records_modified": false
+  },
+  "post_verification": [
+    {
+      "original_client_preserved": 1,
+      "temporary_auth_users_remaining": 0
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "date": "2026-11-25",
+  "scope": "Client overview and case-page structure",
+  "changes": [
+    "Balance and case-status cards share a bounded, aligned overview summary row",
+    "Investigation and funds span the content width outside summary columns",
+    "Case summary is a paired row; timeline and verification use full-width sections",
+    "Removed obsolete mobile ordering and sidebar wrappers"
+  ],
+  "validation": {
+    "layoutChecks": 24,
+    "languages": 4,
+    "widths": [
+      1920,
+      1440,
+      1024,
+      768,
+      390,
+      320
+    ],
+    "crmAutomaticAnimationTests": 2,
+    "typescript": "passed",
+    "productionBuild": "passed",
+    "crmFilesChecked": 94,
+    "crmFilesChanged": [],
+    "browserErrors": [],
+    "backendWrites": 0
+  },
+  "artifacts": {
+    "overview": "test-results/client-layout/overview-desktop.png",
+    "case": "test-results/client-layout/case-desktop.png",
+    "mobileOverview": "test-results/client-layout/overview-mobile.png"
+  },
+  "deploymentPerformed": false
+}

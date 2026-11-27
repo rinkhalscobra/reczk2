@@ -1,0 +1,60 @@
+{
+  "date": "2026-11-25",
+  "cause": "Reduced-motion mode disabled animation and hid playback controls",
+  "fix": "Visible localized Play/Pause controls with an explicit per-panel motion override",
+  "checks": [
+    {
+      "language": "en",
+      "width": 320,
+      "reducedMotion": true,
+      "playback": "passed"
+    },
+    {
+      "language": "en",
+      "width": 1760,
+      "reducedMotion": true,
+      "playback": "passed"
+    },
+    {
+      "language": "fr",
+      "width": 320,
+      "reducedMotion": true,
+      "playback": "passed"
+    },
+    {
+      "language": "fr",
+      "width": 1760,
+      "reducedMotion": true,
+      "playback": "passed"
+    },
+    {
+      "language": "de",
+      "width": 320,
+      "reducedMotion": true,
+      "playback": "passed"
+    },
+    {
+      "language": "de",
+      "width": 1760,
+      "reducedMotion": true,
+      "playback": "passed"
+    },
+    {
+      "language": "it",
+      "width": 320,
+      "reducedMotion": true,
+      "playback": "passed"
+    },
+    {
+      "language": "it",
+      "width": 1760,
+      "reducedMotion": true,
+      "playback": "passed"
+    }
+  ],
+  "regressionTests": 2,
+  "translationRegressionTests": 5,
+  "typescript": "passed",
+  "productionBuild": "passed",
+  "deploymentPerformed": false
+}

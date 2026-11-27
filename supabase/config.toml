@@ -1,0 +1,18 @@
+project_id = "ccqotqrmzsnizychoggp"
+
+[auth]
+site_url = "https://www.clientzone.space"
+additional_redirect_urls = ["https://www.clientzone.space/", "https://www.clientzone.space/auth"]
+enable_signup = true
+
+[auth.email]
+enable_signup = true
+# New email/password accounts receive a session immediately and do not need
+# to follow a confirmation link before signing in.
+enable_confirmations = false
+
+[functions.account-login]
+verify_jwt = false
+
+[functions.register-client]
+verify_jwt = false

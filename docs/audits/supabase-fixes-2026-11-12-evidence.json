@@ -1,0 +1,579 @@
+{
+  "project_ref": "pbfdnjtkeveqeukbrfmk",
+  "applied_migration": {
+    "migration_count_before": 68,
+    "migration_count_after": 69,
+    "migration": {
+      "version": "20261112105626",
+      "name": "fix_chat_access_rpc_permissions_and_realtime"
+    },
+    "local_file": "supabase\\migrations\\20261112105626_fix_chat_access_rpc_permissions_and_realtime.sql",
+    "status": "applied"
+  },
+  "schema_comparison": {
+    "tables": {
+      "actual_count": 21,
+      "expected_count": 21,
+      "missing": [],
+      "extra": [],
+      "changed": []
+    },
+    "columns": {
+      "actual_count": 225,
+      "expected_count": 225,
+      "missing": [],
+      "extra": [],
+      "changed": []
+    },
+    "functions_sql": {
+      "actual_count": 28,
+      "expected_count": 28,
+      "missing": [],
+      "extra": [],
+      "changed": []
+    },
+    "triggers": {
+      "actual_count": 24,
+      "expected_count": 24,
+      "missing": [],
+      "extra": [],
+      "changed": []
+    },
+    "policies": {
+      "actual_count": 143,
+      "expected_count": 143,
+      "missing": [],
+      "extra": [],
+      "changed": []
+    },
+    "constraints": {
+      "actual_count": 81,
+      "expected_count": 81,
+      "missing": [],
+      "extra": [],
+      "changed": []
+    },
+    "indexes": {
+      "actual_count": 44,
+      "expected_count": 44,
+      "missing": [],
+      "extra": [],
+      "changed": []
+    },
+    "enums": {
+      "actual_count": 6,
+      "expected_count": 6,
+      "missing": [],
+      "extra": [],
+      "changed": []
+    },
+    "buckets": {
+      "actual_count": 2,
+      "expected_count": 2,
+      "missing": [],
+      "extra": [],
+      "changed": []
+    },
+    "publications": {
+      "actual_count": 12,
+      "expected_count": 12,
+      "missing": [],
+      "extra": [],
+      "changed": []
+    },
+    "function_grants": {
+      "actual_count": 28,
+      "expected_count": 28,
+      "missing": [],
+      "extra": [],
+      "changed": []
+    },
+    "views": {
+      "actual_count": 0,
+      "expected_count": 0,
+      "missing": [],
+      "extra": [],
+      "changed": []
+    }
+  },
+  "migration_history": [
+    {
+      "version": "20251127122045",
+      "file": "20251127122045_9009d1bc-f73d-4914-851f-f7096a5e699c.sql",
+      "matches": true
+    },
+    {
+      "version": "20251127122059",
+      "file": "20251127122059_0a903ee7-4f6c-49b5-94a2-a5fc902c651f.sql",
+      "matches": true
+    },
+    {
+      "version": "20251127122926",
+      "file": "20251127122926_57e3e5d3-633e-433e-975b-acbbd4adfd0a.sql",
+      "matches": true
+    },
+    {
+      "version": "20251202150716",
+      "file": "20251202150716_bb48aaea-9424-4fcd-b01b-acb2d8c8ac21.sql",
+      "matches": true
+    },
+    {
+      "version": "20251202151405",
+      "file": "20251202151405_d8e82834-2278-4bf0-a88c-19deb1185a3d.sql",
+      "matches": true
+    },
+    {
+      "version": "20251202151837",
+      "file": "20251202151837_6761e2e5-f282-4314-b202-9c2172322e52.sql",
+      "matches": true
+    },
+    {
+      "version": "20251202152355",
+      "file": "20251202152355_df56bab0-50bd-4510-b54b-4d7a5c7a28ba.sql",
+      "matches": true
+    },
+    {
+      "version": "20251204153342",
+      "file": "20251204153342_2b280393-2586-4e42-bf4d-f8910df18727.sql",
+      "matches": true
+    },
+    {
+      "version": "20251212142119",
+      "file": "20251212142119_7c3b1258-63ac-4c39-a804-b89946a1b424.sql",
+      "matches": true
+    },
+    {
+      "version": "20251223144513",
+      "file": "20251223144513_b26ae87a-4398-48ab-8652-143d49e8851d.sql",
+      "matches": true
+    },
+    {
+      "version": "20251223144817",
+      "file": "20251223144817_c992bffc-f2e3-456a-8217-d02d946a38d8.sql",
+      "matches": true
+    },
+    {
+      "version": "20251228231720",
+      "file": "20251228231720_c5619c36-fd95-45c9-b6cd-0d71304e77fd.sql",
+      "matches": true
+    },
+    {
+      "version": "20251229000655",
+      "file": "20251229000655_9a1f18af-a717-43af-a18d-68cac82034dd.sql",
+      "matches": true
+    },
+    {
+      "version": "20251229000710",
+      "file": "20251229000710_db603f7a-9813-4f28-9ae3-d3ffac691714.sql",
+      "matches": true
+    },
+    {
+      "version": "20251229004320",
+      "file": "20251229004320_d198f3c4-8e96-4dcd-b4c4-503732c4dd9f.sql",
+      "matches": true
+    },
+    {
+      "version": "20251229005806",
+      "file": "20251229005806_38ea8706-34fd-45b9-b9fc-a3dea7bee9f1.sql",
+      "matches": true
+    },
+    {
+      "version": "20251229011740",
+      "file": "20251229011740_2fc1e3b9-703e-44bb-9ac9-73b87ffaba7d.sql",
+      "matches": true
+    },
+    {
+      "version": "20251229014429",
+      "file": "20251229014429_407f7ca6-2a7a-4877-a998-f1e1927566f9.sql",
+      "matches": true
+    },
+    {
+      "version": "20260104152053",
+      "file": "20260104152053_40cda662-a5e0-4c7f-b028-5ae272d6dea9.sql",
+      "matches": true
+    },
+    {
+      "version": "20260106143830",
+      "file": "20260106143830_5960d36d-e114-4788-992d-94e28b7d7964.sql",
+      "matches": true
+    },
+    {
+      "version": "20260106144911",
+      "file": "20260106144911_a1a7d1ec-2915-46e6-8aa9-c55cd1915939.sql",
+      "matches": true
+    },
+    {
+      "version": "20260106150359",
+      "file": "20260106150359_2a79bdc6-82cf-40ce-ad92-5a1243f9a128.sql",
+      "matches": true
+    },
+    {
+      "version": "20260106150800",
+      "file": "20260106150800_10186988-6f78-4e34-8564-f7887653f6ca.sql",
+      "matches": true
+    },
+    {
+      "version": "20260107140003",
+      "file": "20260107140003_019a79a3-e911-4e1a-a1d0-022c4355d805.sql",
+      "matches": true
+    },
+    {
+      "version": "20260107140117",
+      "file": "20260107140117_8c663ec0-6377-451d-8cf0-3cdf45f9b7fe.sql",
+      "matches": true
+    },
+    {
+      "version": "20260107141741",
+      "file": "20260107141741_5e42a7b4-ecdd-4dd5-a2ab-c3b951324926.sql",
+      "matches": true
+    },
+    {
+      "version": "20260107143843",
+      "file": "20260107143843_7965e3e7-1779-4811-bb81-026e20e8d8c3.sql",
+      "matches": true
+    },
+    {
+      "version": "20260107150529",
+      "file": "20260107150529_bcd31457-0199-4f13-ba56-b8bf5b976b7b.sql",
+      "matches": true
+    },
+    {
+      "version": "20260107154518",
+      "file": "20260107154518_9556a5e6-5bd8-448c-b5dd-e0f68c8b1f09.sql",
+      "matches": true
+    },
+    {
+      "version": "20260107160549",
+      "file": "20260107160549_96115711-5b1f-4b0c-8dff-3dced3507e4d.sql",
+      "matches": true
+    },
+    {
+      "version": "20260107171115",
+      "file": "20260107171115_0734803b-7791-4bed-94be-972204023a08.sql",
+      "matches": true
+    },
+    {
+      "version": "20260115144559",
+      "file": "20260115144559_64a01e6d-87b2-4d12-981f-0d27dbf6ce81.sql",
+      "matches": true
+    },
+    {
+      "version": "20260115150956",
+      "file": "20260115150956_d494d946-8216-4dec-981b-8e916fa012c8.sql",
+      "matches": true
+    },
+    {
+      "version": "20260211131556",
+      "file": "20260211131556_399a4729-9e31-4a81-93e6-1c762de2c0e3.sql",
+      "matches": true
+    },
+    {
+      "version": "20260225000221",
+      "file": "20260225000221_f1d08403-0d47-4f48-8a7c-54af4accc6b3.sql",
+      "matches": true
+    },
+    {
+      "version": "20260225000341",
+      "file": "20260225000341_0753128d-9ced-4114-9db4-cd82fca8879a.sql",
+      "matches": true
+    },
+    {
+      "version": "20260317164149",
+      "file": "20260317164149_140b301d-5b44-4a86-b879-a723d8c3806b.sql",
+      "matches": true
+    },
+    {
+      "version": "20260317164358",
+      "file": "20260317164358_8033f073-b933-4deb-9737-899cbb0ecf9a.sql",
+      "matches": true
+    },
+    {
+      "version": "20260613150000",
+      "file": "20260613150000_restore_profile_platform_schema.sql",
+      "matches": true
+    },
+    {
+      "version": "20260613153711",
+      "file": "20260613153711_62a9c515-617d-424c-8638-aca66e43be49.sql",
+      "matches": true
+    },
+    {
+      "version": "20260618095821",
+      "file": "20260618095821_2ed80bf6-c167-4a9e-a59e-9d9544b7b55d.sql",
+      "matches": true
+    },
+    {
+      "version": "20260619101617",
+      "file": "20260619101617_d0588820-33f8-4baa-becf-377a7389fbc4.sql",
+      "matches": true
+    },
+    {
+      "version": "20260619102410",
+      "file": "20260619102410_1d1d9e0b-28ef-4b70-907f-be9d009b465f.sql",
+      "matches": true
+    },
+    {
+      "version": "20260623231541",
+      "file": "20260623231541_f612da8b-3214-45b2-9171-c8268be0436e.sql",
+      "matches": true
+    },
+    {
+      "version": "20260623231638",
+      "file": "20260623231638_1242816c-747d-4ce3-8659-81c61be4452b.sql",
+      "matches": true
+    },
+    {
+      "version": "20260629133503",
+      "file": "20260629133503_00f84883-6507-415e-b058-cad9519e25e0.sql",
+      "matches": true
+    },
+    {
+      "version": "20260629134306",
+      "file": "20260629134306_c22e82e4-abd2-41c2-8235-0a35cf7cf8da.sql",
+      "matches": true
+    },
+    {
+      "version": "20260629135342",
+      "file": "20260629135342_74ec2360-51e9-4011-b37b-89cde4b42853.sql",
+      "matches": true
+    },
+    {
+      "version": "20260702152645",
+      "file": "20260702152645_6bd43407-23e7-409c-b4f5-3a9637811217.sql",
+      "matches": true
+    },
+    {
+      "version": "20260702152837",
+      "file": "20260702152837_4674bd90-1a82-4db9-b493-01a6bfb769f0.sql",
+      "matches": true
+    },
+    {
+      "version": "20260901073922",
+      "file": "20260901073922_80c53240-0a8f-4c9c-b864-7f13a832eb8f.sql",
+      "matches": true
+    },
+    {
+      "version": "20260901180000",
+      "file": "20260901180000_rebrand_to_brightfund.sql",
+      "matches": true
+    },
+    {
+      "version": "20260901184500",
+      "file": "20260901184500_brightfund_signup_defaults.sql",
+      "matches": true
+    },
+    {
+      "version": "20260903120000",
+      "file": "20260903120000_client_payment_details.sql",
+      "matches": true
+    },
+    {
+      "version": "20260903130000",
+      "file": "20260903130000_fix_duplicate_transaction_balance_updates.sql",
+      "matches": true
+    },
+    {
+      "version": "20260903140000",
+      "file": "20260903140000_recovery_investigation_workflow.sql",
+      "matches": true
+    },
+    {
+      "version": "20260903150000",
+      "file": "20260903150000_separate_cash_and_portfolio_ledger.sql",
+      "matches": true
+    },
+    {
+      "version": "20260904120000",
+      "file": "20260904120000_withdrawal_review_workflow.sql",
+      "matches": true
+    },
+    {
+      "version": "20260904130000",
+      "file": "20260904130000_rebrand_existing_platform_to_brightfund.sql",
+      "matches": true
+    },
+    {
+      "version": "20260906120000",
+      "file": "20260906120000_multi_currency_customer_balances.sql",
+      "matches": true
+    },
+    {
+      "version": "20260906130000",
+      "file": "20260906130000_recovery_funds_workflow.sql",
+      "matches": true
+    },
+    {
+      "version": "20260912120000",
+      "file": "20260912120000_crypto_balance_adjustments.sql",
+      "matches": true
+    },
+    {
+      "version": "20260912150000",
+      "file": "20260912150000_delete_crypto_balance.sql",
+      "matches": true
+    },
+    {
+      "version": "20260913120000",
+      "file": "20260913120000_balance_adjustment_notifications.sql",
+      "matches": true
+    },
+    {
+      "version": "20261013140000",
+      "file": "20261013140000_clear_legacy_ip_allowlist_seed_data.sql",
+      "matches": true
+    },
+    {
+      "version": "20261016120000",
+      "file": "20261016120000_balance_dashboard_visibility.sql",
+      "matches": true
+    },
+    {
+      "version": "20261016130000",
+      "file": "20261016130000_kyc_workflow.sql",
+      "matches": true
+    },
+    {
+      "version": "20261016140000",
+      "file": "20261016140000_hierarchy_hardening.sql",
+      "matches": true
+    },
+    {
+      "version": "20261112105626",
+      "file": "20261112105626_fix_chat_access_rpc_permissions_and_realtime.sql",
+      "matches": true
+    }
+  ],
+  "message_update_permissions": [
+    {
+      "read_receipt_allowed": true,
+      "sender_edit_allowed": false,
+      "recipient_edit_allowed": false,
+      "attachment_edit_allowed": false,
+      "content_edit_allowed": false,
+      "service_role_update_allowed": true
+    }
+  ],
+  "isolated_workflow_checks": [
+    {
+      "name": "Signup creates a profile and three currency balances without trusting injected role/group/platform",
+      "result": "PASS"
+    },
+    {
+      "name": "Customer profile reads are restricted to their own profile",
+      "result": "PASS"
+    },
+    {
+      "name": "Agent cannot read an unassigned customer from another group",
+      "result": "PASS"
+    },
+    {
+      "name": "Customer cannot elevate their own protected profile fields",
+      "result": "PASS"
+    },
+    {
+      "name": "Agent cannot grant themselves an administrator role",
+      "result": "PASS"
+    },
+    {
+      "name": "Fiat transaction approval credits exactly once, including reapproval",
+      "result": "PASS"
+    },
+    {
+      "name": "Crypto approvals update holdings without changing fiat cash",
+      "result": "PASS"
+    },
+    {
+      "name": "Authorized fiat RPC creates a balance change and notification atomically",
+      "result": "PASS"
+    },
+    {
+      "name": "Customer cannot call the fiat adjustment RPC to credit themselves",
+      "result": "PASS"
+    },
+    {
+      "name": "Located funds credit once and credited amounts are protected",
+      "result": "PASS"
+    },
+    {
+      "name": "KYC draft save works and cross-customer KYC update is denied",
+      "result": "PASS"
+    },
+    {
+      "name": "Chat attachment isolation: agent cannot read a different group customer file",
+      "result": "PASS"
+    },
+    {
+      "name": "Chat attachment delivery: customer can read a file sent to them by their agent",
+      "result": "PASS"
+    }
+  ],
+  "repository_tests": {
+    "passed": 22,
+    "failed": 0
+  },
+  "live_anonymous_rpc_checks": [
+    {
+      "rpc": "can_manage_customer",
+      "status": 401,
+      "response": {
+        "code": "42501",
+        "details": null,
+        "hint": null,
+        "message": "permission denied for function can_manage_customer"
+      }
+    },
+    {
+      "rpc": "get_user_sessions_for_staff",
+      "status": 401,
+      "response": {
+        "code": "42501",
+        "details": null,
+        "hint": null,
+        "message": "permission denied for function get_user_sessions_for_staff"
+      }
+    },
+    {
+      "rpc": "validate_promocode",
+      "status": 200,
+      "response": [
+        {
+          "is_valid": false,
+          "message": "The promocode is invalid or inactive"
+        }
+      ]
+    }
+  ],
+  "data_counts_after": [
+    {
+      "auth_users": 9,
+      "profiles": 9,
+      "messages": 1,
+      "storage_objects": 0,
+      "cash_balances": 27
+    }
+  ],
+  "auth_configuration": {
+    "site_url": "https://www.clientzone.space",
+    "uri_allow_list": "https://www.clientzone.space/,https://www.clientzone.space/auth",
+    "mailer_autoconfirm": true,
+    "disable_signup": false
+  },
+  "auth_status": "configured for the user-provided production portal and verified via Management API",
+  "secret_rotation": "not performed",
+  "auth_update": {
+    "project_ref": "pbfdnjtkeveqeukbrfmk",
+    "before": {
+      "site_url": "http://localhost:3000",
+      "uri_allow_list": "",
+      "mailer_autoconfirm": true,
+      "disable_signup": false
+    },
+    "after": {
+      "site_url": "https://www.clientzone.space",
+      "uri_allow_list": "https://www.clientzone.space/,https://www.clientzone.space/auth",
+      "mailer_autoconfirm": true,
+      "disable_signup": false
+    },
+    "status": "applied and verified"
+  }
+}

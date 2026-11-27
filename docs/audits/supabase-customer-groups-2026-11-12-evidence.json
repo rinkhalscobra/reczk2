@@ -1,0 +1,25 @@
+{
+  "project_ref": "pbfdnjtkeveqeukbrfmk",
+  "applied_migration": {
+    "version": "20261112112432",
+    "name": "customer_group_transfers"
+  },
+  "migration_count": 71,
+  "live_function_body_matches": true,
+  "live_permissions": {
+    "prosecdef": true,
+    "proconfig": [
+      "search_path=public"
+    ],
+    "anon_execute": false,
+    "authenticated_execute": true
+  },
+  "live_group_placement_and_removal": "passed under authenticated administrator claims in a rolled-back transaction",
+  "original_customer_group_and_assignment_preserved": true,
+  "anonymous_rpc_status": 401,
+  "database_tests_passed": 39,
+  "browser_tests_passed": 29,
+  "typescript": "passed",
+  "lint": "passed",
+  "production_build": "passed"
+}

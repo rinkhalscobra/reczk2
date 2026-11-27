@@ -1,0 +1,270 @@
+import { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Check, X, Loader2, ArrowUpRight, ArrowDownLeft, Eye } from 'lucide-react';
+import { TransactionPaymentDetailsDialog } from '@/components/admin/TransactionPaymentDetailsDialog';
+import { TransactionReviewDialog } from '@/components/admin/TransactionReviewDialog';
+import type { Json } from '@/integrations/supabase/types';
+
+const formatTransactionAmount = (amount: number, currency: string) =>
+  new Intl.NumberFormat(undefined, { style: 'currency', currency: currency || 'EUR' }).format(amount);
+
+interface Transaction {
+  id: string;
+  customer_id: string;
+  type: 'deposit' | 'withdraw';
+  amount: number;
+  currency: string;
+  method: string;
+  status: string;
+  created_at: string | null;
+  crypto_symbol?: string | null;
+  quantity?: number | null;
+  payment_details: Json | null;
+  payment_instructions_snapshot: Json | null;
+  customer?: {
+    first_name: string | null;
+    last_name: string | null;
+    email: string | null;
+  };
+}
+
+interface EnrichedTransaction extends Transaction {
+  _customerGroupId?: string | null;
+  _assignedTo?: string | null;
+}
+
+interface PendingTransactionsProps {
+  groupId?: string | null;
+  assignedOnly?: boolean;
+  className?: string;
+}
+
+export const PendingTransactions = ({
+  groupId,
+  assignedOnly = false,
+  className,
+}: PendingTransactionsProps) => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const userId = user?.id;
+  const { t } = useLanguage();
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchTransactions = useCallback(async () => {
+    if (!userId) return;
+    
+    try {
+      const query = supabase
+        .from('transaction_requests')
+        .select('*')
+        .eq('status', 'pending')
+        .order('created_at', { ascending: false });
+
+      const { data, error } = await query;
+      if (error) throw error;
+
+      // Fetch customer details for each transaction
+      if (data && data.length > 0) {
+        const customerIds = [...new Set(data.map(t => t.customer_id))];
+        const { data: customers, error: customersError } = await supabase
+          .from('profiles')
+          .select('id, first_name, last_name, email, assigned_to, group_id')
+          .eq('is_archived', false)
+          .in('id', customerIds);
+        if (customersError) throw customersError;
+        const customersById = new Map(customers?.map(customer => [customer.id, customer]));
+
+        // Filter based on access and map customer data
+        let filteredTransactions: EnrichedTransaction[] = data.map(t => {
+          const customer = customersById.get(t.customer_id);
+          return {
+            ...t,
+            customer: customer ? {
+              first_name: customer.first_name,
+              last_name: customer.last_name,
+              email: customer.email,
+            } : undefined,
+            _customerGroupId: customer?.group_id,
+            _assignedTo: customer?.assigned_to,
+          };
+        });
+
+        // Hide transactions whose customer is archived (customer lookup returns nothing)
+        filteredTransactions = filteredTransactions.filter(t => t.customer !== undefined);
+
+        // Apply filtering based on role
+        if (assignedOnly) {
+          filteredTransactions = filteredTransactions.filter(t => 
+            t._assignedTo === userId
+          );
+        } else if (groupId) {
+          filteredTransactions = filteredTransactions.filter(t => 
+            t._customerGroupId === groupId
+          );
+        }
+
+        setTransactions(filteredTransactions);
+      } else {
+        setTransactions([]);
+      }
+    } catch (error: unknown) {
+      console.error('Error fetching transactions:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [userId, groupId, assignedOnly]);
+
+  useEffect(() => {
+    if (!userId) return;
+    fetchTransactions();
+
+    // Real-time subscription for transaction updates
+    const channel = supabase
+      .channel('pending-transactions')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'transaction_requests',
+        },
+        () => {
+          fetchTransactions();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [userId, fetchTransactions]);
+
+  if (loading) {
+    return (
+      <Card className={className}>
+        <CardHeader>
+          <CardTitle className="text-sm">{t('transactions.pending') || 'Pending Transactions'}</CardTitle>
+        </CardHeader>
+        <CardContent className="flex justify-center py-8">
+          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (transactions.length === 0) {
+    return (
+      <Card className={className}>
+        <CardHeader>
+          <CardTitle className="text-sm flex items-center gap-2">
+            {t('transactions.pending') || 'Pending Transactions'}
+            <Badge variant="secondary">0</Badge>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="py-8 text-center text-muted-foreground">
+          {t('transactions.noPending') || 'No pending transactions'}
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <Card className={className}>
+      <CardHeader>
+        <CardTitle className="text-sm flex items-center gap-2">
+          {t('transactions.pending') || 'Pending Transactions'}
+          <Badge variant="secondary" className="bg-yellow-500/20 text-yellow-400">
+            {transactions.length}
+          </Badge>
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="p-0">
+        <div className="divide-y divide-border">
+          {transactions.map((tx) => (
+            <div
+              key={tx.id}
+              className="p-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4"
+            >
+              {/* Transaction Icon */}
+              <div className={`p-2 rounded-lg flex-shrink-0 ${
+                tx.type === 'deposit' 
+                  ? 'bg-green-500/20' 
+                  : 'bg-red-500/20'
+              }`}>
+                {tx.type === 'deposit' ? (
+                  <ArrowDownLeft className="h-5 w-5 text-green-400" />
+                ) : (
+                  <ArrowUpRight className="h-5 w-5 text-red-400" />
+                )}
+              </div>
+
+              {/* Transaction Details */}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="font-medium capitalize">{tx.type}</span>
+                  <span className="font-bold text-primary">
+                    {formatTransactionAmount(tx.amount, tx.currency)}
+                  </span>
+                  <Badge variant="outline" className="text-xs">
+                    {tx.method.replace('_', ' ')}
+                  </Badge>
+                  {tx.crypto_symbol && tx.quantity ? (
+                    <Badge variant="secondary" className="text-xs">
+                      {tx.quantity} {tx.crypto_symbol}
+                    </Badge>
+                  ) : null}
+                </div>
+
+                <div className="text-sm text-muted-foreground truncate">
+                  {tx.customer?.first_name} {tx.customer?.last_name} 
+                  {tx.customer?.email && ` • ${tx.customer.email}`}
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  {tx.created_at && new Date(tx.created_at).toLocaleString()}
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-2 flex-shrink-0">
+                <TransactionPaymentDetailsDialog
+                  transactionType={tx.type}
+                  method={tx.method}
+                  paymentDetails={tx.payment_details}
+                  instructionSnapshot={tx.payment_instructions_snapshot}
+                />
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="h-8 w-8 p-0"
+                  onClick={() => navigate(`/customer/${tx.customer_id}`)}
+                  title="Open client record"
+                >
+                  <Eye className="h-4 w-4" />
+                </Button>
+                <TransactionReviewDialog transaction={tx} action="approved" onReviewed={fetchTransactions}>
+                  <Button size="sm" variant="outline" className="h-8 border-green-500/30 bg-green-500/20 text-green-400 hover:bg-green-500/30 hover:text-green-300">
+                    <Check className="mr-1 h-4 w-4" /><span className="hidden sm:inline">Approve</span>
+                  </Button>
+                </TransactionReviewDialog>
+                <TransactionReviewDialog transaction={tx} action="rejected" onReviewed={fetchTransactions}>
+                  <Button size="sm" variant="outline" className="h-8 border-red-500/30 bg-red-500/20 text-red-400 hover:bg-red-500/30 hover:text-red-300">
+                    <X className="mr-1 h-4 w-4" /><span className="hidden sm:inline">Reject</span>
+                  </Button>
+                </TransactionReviewDialog>
+              </div>
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default PendingTransactions;

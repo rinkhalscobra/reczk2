@@ -1,0 +1,16 @@
+{
+  "migration": {
+    "version": "20261112111311",
+    "name": "assign_ungrouped_customers_to_agent_group"
+  },
+  "migration_count": 70,
+  "customer_initially_ungrouped": true,
+  "live_assignment_transaction": "passed with authenticated administrator claims; rolled back; original assignment preserved",
+  "migration_sql_matches": true,
+  "database_tests_passed": 30,
+  "typescript_check": "passed",
+  "production_build": "passed",
+  "live_function_body_matches": true,
+  "browser_tests_passed": 4,
+  "frontend_status": "tested locally; database fix supports the existing live frontend without a redeploy"
+}

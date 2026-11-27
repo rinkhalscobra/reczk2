@@ -1,0 +1,89 @@
+{
+  "project": "pbfdnjtkeveqeukbrfmk",
+  "date": "2026-11-19",
+  "migration": "20261119100000_client_only_case_numbers.sql",
+  "pendingMigrations": [],
+  "before": {
+    "authUsers": 41,
+    "balances": 123,
+    "clients": 28,
+    "clientsWithoutCases": 0,
+    "loginMismatches": 0,
+    "profiles": 41,
+    "roles": 13,
+    "staff": 13,
+    "staffWithCases": 13
+  },
+  "after": {
+    "authUsers": 41,
+    "balances": 123,
+    "clients": 28,
+    "clientsWithoutCases": 0,
+    "loginMismatches": 0,
+    "profiles": 41,
+    "roles": 13,
+    "staff": 13,
+    "staffWithCases": 0
+  },
+  "balancesPreserved": true,
+  "clientCasesPreserved": true,
+  "functions": [
+    {
+      "name": "create-user",
+      "version": 4,
+      "status": "ACTIVE",
+      "verify_jwt": true
+    },
+    {
+      "name": "account-login",
+      "version": 2,
+      "status": "ACTIVE",
+      "verify_jwt": false
+    },
+    {
+      "name": "register-client",
+      "version": 2,
+      "status": "ACTIVE",
+      "verify_jwt": false
+    }
+  ],
+  "localVerification": {
+    "backendTests": 127,
+    "browserTests": 60,
+    "typeScript": true,
+    "eslint": true,
+    "deno": true,
+    "productionBuild": true
+  },
+  "liveVerification": {
+    "checkedAt": "2026-11-19T09:29:32.397Z",
+    "project": "pbfdnjtkeveqeukbrfmk",
+    "checks": [
+      "Client registration with a case succeeds",
+      "Client registration without a case is rejected",
+      "New client retains its supplied case",
+      "Client case sign-in succeeds",
+      "admin profile has no case number",
+      "admin signs in with normal email and password without a case",
+      "group_admin profile has no case number",
+      "group_admin signs in with normal email and password without a case",
+      "supervisor profile has no case number",
+      "supervisor signs in with normal email and password without a case",
+      "agent profile has no case number",
+      "agent signs in with normal email and password without a case",
+      "Staff creation succeeds without returning a case number",
+      "Created staff has no case and uses its normal Auth email",
+      "Newly created staff signs in without a case",
+      "Staff invitation registration succeeds without a case",
+      "Staff invitation grants its validated role with no case and normal email",
+      "Invited staff signs in without a case",
+      "Demotion back to a client assigns a readable case",
+      "Demoted client signs in with its new case"
+    ],
+    "cleanup": {
+      "temporaryAccountsRemoved": 3,
+      "remainingTemporaryAccounts": 0
+    }
+  },
+  "updatedFrontendPublished": false
+}

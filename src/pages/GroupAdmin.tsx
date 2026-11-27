@@ -1,0 +1,771 @@
+import { ChangeClientCaseNumberDialog } from '@/components/admin/ChangeClientCaseNumberDialog';
+import { AssignmentSummary, ClientAssignmentCells, ClientAssignmentHeaders } from '@/components/admin/ClientAssignments';
+import { createAssignmentLookup } from '@/lib/clientAssignments';
+import { EditAgentDialog } from '@/components/admin/EditAgentDialog';
+import { EditStaffCredentialsDialog } from '@/components/admin/EditStaffCredentialsDialog';
+import { AgentCaseCode } from '@/components/admin/AgentCaseCode';
+import { useAgentCaseCodes } from '@/hooks/useAgentCaseCodes';
+import { useGroupDetailsContent } from '@/i18n/groupDetails';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
+import { useUserRole } from '@/hooks/useUserRole';
+import { RouteStatus } from '@/components/RouteStatus';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { supabase } from '@/integrations/supabase/client';
+import { StaffDashboardLayout } from '@/components/dashboard/StaffDashboardLayout';
+import { PendingTransactions } from '@/components/dashboard/PendingTransactions';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useToast } from '@/hooks/use-toast';
+import { Users, Shield, UserCog, Trash2, Bell, Globe, Activity, KeyRound, Key, Search } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import PasswordResetRequests from '@/components/admin/PasswordResetRequests';
+import { CreateUserDialog } from '@/components/admin/CreateUserDialog';
+import { CreateClientDialog } from '@/components/admin/CreateClientDialog';
+import { CreateIPWhitelistDialog } from '@/components/admin/CreateIPWhitelistDialog';
+import { EditIPWhitelistDialog } from '@/components/admin/EditIPWhitelistDialog';
+import CreateNotificationDialog from '@/components/admin/CreateNotificationDialog';
+import { EditStaffNameDialog } from '@/components/admin/EditStaffNameDialog';
+import { MFASetupDialog } from '@/components/admin/MFASetupDialog';
+import { BulkAssignAgentsDialog } from '@/components/admin/BulkAssignAgentsDialog';
+import { AgentSupervisorSelect } from '@/components/admin/SupervisorSelector';
+import { AgentClientsDialog } from '@/components/admin/AgentClientsDialog';
+import { SupervisorAgentsDialog } from '@/components/admin/SupervisorAgentsDialog';
+import { DeleteUserDialog } from '@/components/admin/DeleteUserDialog';
+
+interface UserProfile {
+  case_number?: string | null;
+  id: string;
+  email: string | null;
+  first_name: string | null;
+  last_name: string | null;
+  username: string | null;
+  phone: string | null;
+  birthdate: string | null;
+  status: 'active' | 'inactive' | 'suspended' | 'invalid_language' | null;
+  group_id: string | null;
+  created_by: string | null;
+  last_login: string | null;
+  is_super: boolean | null;
+  assigned_to: string | null;
+  supervisor_id: string | null;
+  created_at: string | null;
+}
+
+const getErrorMessage = (error: unknown) => error instanceof Error ? error.message : 'Unexpected error';
+
+interface UserRole {
+  id: string;
+  user_id: string;
+  role: 'admin' | 'group_admin' | 'supervisor' | 'agent' | 'user';
+  created_at: string | null;
+}
+
+interface Group {
+  id: string;
+  name: string;
+  description: string | null;
+  created_by: string | null;
+  created_at: string | null;
+}
+
+interface IPWhitelistEntry {
+  id: string;
+  ip_address: string;
+  ip_version: string;
+  action: 'ALLOW' | 'DENY';
+  subject: string;
+  group_id: string | null;
+  created_at: string | null;
+}
+
+interface StaffSession {
+  id: string;
+  user_id: string;
+  login_time: string | null;
+  is_active: boolean;
+  login_ip: string | null;
+  user_agent: string | null;
+  user_name?: string;
+  user_role?: string;
+}
+
+const GroupAdmin = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const { t } = useLanguage();
+  
+  const { isGroupAdmin, isLoading: loading } = useUserRole();
+  const [users, setUsers] = useState<UserProfile[]>([]);
+  const [userRoles, setUserRoles] = useState<UserRole[]>([]);
+  const [myGroup, setMyGroup] = useState<Group | null>(null);
+  const [ipWhitelist, setIpWhitelist] = useState<IPWhitelistEntry[]>([]);
+  const [staffSessions, setStaffSessions] = useState<StaffSession[]>([]);
+  const [loadingData, setLoadingData] = useState(true);
+  const [activeTab, setActiveTab] = useState('customers');
+  const [loadingSessions, setLoadingSessions] = useState(false);
+  const [updatingRole, setUpdatingRole] = useState<string | null>(null);
+  const [customerSearch, setCustomerSearch] = useState('');
+
+  useEffect(() => {
+    if (isGroupAdmin && user) {
+      fetchData();
+    }
+  }, [isGroupAdmin, user?.id]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const fetchData = async () => {
+    if (!user) return;
+    
+    try {
+      // Get my profile to find my group
+      const { data: myProfile, error: profileError } = await supabase
+        .from('profiles')
+        .select('group_id')
+        .eq('id', user.id)
+        .single();
+
+      if (profileError) throw profileError;
+
+      if (!myProfile?.group_id) {
+        toast({
+          title: t('groupAdmin.noGroupAssigned'),
+          description: t('groupAdmin.contactSuperAdmin'),
+          variant: "destructive"
+        });
+        setLoadingData(false);
+        return;
+      }
+
+      const [groupResult, usersResult, ipResult] = await Promise.all([
+        supabase.from('groups').select('id, name, description, created_by, created_at').eq('id', myProfile.group_id).single(),
+        supabase.from('profiles').select('*').eq('group_id', myProfile.group_id).eq('is_archived', false).order('created_at', { ascending: false }),
+        supabase.from('ip_whitelist').select('*').eq('group_id', myProfile.group_id).order('created_at', { ascending: false }),
+      ]);
+      if (groupResult.error) throw groupResult.error;
+      if (usersResult.error) throw usersResult.error;
+      if (ipResult.error) throw ipResult.error;
+      const groupUsers = usersResult.data;
+      setMyGroup(groupResult.data);
+
+      // Get roles for these users
+      const userIds = groupUsers?.map(u => u.id) || [];
+      const { data: rolesData, error: rolesError } = await supabase
+        .from('user_roles')
+        .select('*')
+        .in('user_id', userIds);
+
+      if (rolesError) throw rolesError;
+
+      setUsers(groupUsers || []);
+      setUserRoles(rolesData || []);
+      setIpWhitelist(ipResult.data || []);
+      
+      // Fetch sessions for staff members
+      // Session history belongs to its own tab and must not delay the dashboard.
+      void fetchStaffSessions(groupUsers || [], rolesData || []);
+    } catch (error: unknown) {
+      toast({ title: t('common.error'), description: getErrorMessage(error), variant: "destructive" });
+    } finally {
+      setLoadingData(false);
+    }
+  };
+
+  const fetchStaffSessions = async (groupUsers: UserProfile[], roles: UserRole[]) => {
+    setLoadingSessions(true);
+    try {
+      const staffRoles = ['admin', 'group_admin', 'supervisor', 'agent'];
+      const staffUserIds = roles
+        .filter(r => staffRoles.includes(r.role))
+        .map(r => r.user_id);
+
+      if (staffUserIds.length === 0) {
+        setStaffSessions([]);
+        return;
+      }
+
+      // Fetch sessions for all staff members
+      const allSessions: StaffSession[] = [];
+      
+      for (const staffUserId of staffUserIds) {
+        const { data: sessions, error } = await supabase
+          .rpc('get_user_sessions_for_staff', { target_user_id: staffUserId });
+
+        if (error) {
+          console.error('Error fetching sessions for user:', staffUserId, error);
+          continue;
+        }
+
+        if (sessions) {
+          const staffUser = groupUsers.find(u => u.id === staffUserId);
+          const staffRole = roles.find(r => r.user_id === staffUserId);
+          
+          const enrichedSessions = sessions.map((session) => ({
+            ...session,
+            user_name: staffUser ? `${staffUser.first_name || ''} ${staffUser.last_name || ''}`.trim() || staffUser.email || 'Unknown' : 'Unknown',
+            user_role: staffRole?.role || 'user'
+          }));
+          
+          allSessions.push(...enrichedSessions);
+        }
+      }
+
+      // Sort by login_time desc
+      allSessions.sort((a, b) => {
+        if (!a.login_time) return 1;
+        if (!b.login_time) return -1;
+        return new Date(b.login_time).getTime() - new Date(a.login_time).getTime();
+      });
+
+      setStaffSessions(allSessions);
+    } catch (error) {
+      console.error('Error fetching staff sessions:', error);
+    } finally {
+      setLoadingSessions(false);
+    }
+  };
+
+  const handleRefresh = async () => fetchData();
+
+  const getUserRole = (userId: string): string => {
+    const role = userRoles.find(r => r.user_id === userId);
+    return role?.role || 'user';
+  };
+
+  const handleRoleChange = async (userId: string, newRole: string) => {
+    // Prevent promoting to admin or group_admin
+    if (newRole === 'admin' || newRole === 'group_admin') {
+      toast({ 
+        title: t('common.error'), 
+        description: t('groupAdmin.cannotPromoteToAdmin'),
+        variant: "destructive" 
+      });
+      return;
+    }
+
+    setUpdatingRole(userId);
+    try {
+      const { error } = await supabase.rpc('set_managed_user_role', {
+        p_user_id: userId,
+        p_role: newRole as UserRole['role'],
+      });
+      if (error) throw error;
+
+      toast({ title: t('admin.roleUpdated'), description: `${t('groupAdmin.roleUpdatedTo')} ${newRole}.` });
+      fetchData();
+    } catch (error: unknown) {
+      toast({ title: t('common.error'), description: getErrorMessage(error), variant: "destructive" });
+    } finally {
+      setUpdatingRole(null);
+    }
+  };
+
+  const handleRemoveRole = async (userId: string) => {
+    try {
+      const { error } = await supabase.rpc('set_managed_user_role', {
+        p_user_id: userId,
+        p_role: 'user',
+      });
+      if (error) throw error;
+      toast({ title: t('admin.roleRemoved') });
+      fetchData();
+    } catch (error: unknown) {
+      toast({ title: t('common.error'), description: getErrorMessage(error), variant: "destructive" });
+    }
+  };
+
+  const handleStatusChange = async (userId: string, newStatus: string) => {
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ status: newStatus as UserProfile['status'] })
+        .eq('id', userId);
+      
+      if (error) throw error;
+      toast({ title: t('admin.statusUpdated') });
+      fetchData();
+    } catch (error: unknown) {
+      toast({ title: t('common.error'), description: getErrorMessage(error), variant: "destructive" });
+    }
+  };
+
+  const handleDeleteIPRule = async (id: string) => {
+    try {
+      const { error } = await supabase.from('ip_whitelist').delete().eq('id', id);
+      if (error) throw error;
+      toast({ title: t('admin.ipRuleDeleted') });
+      fetchData();
+    } catch (error: unknown) {
+      toast({ title: t('common.error'), description: getErrorMessage(error), variant: "destructive" });
+    }
+  };
+
+  const filterUsersByRole = (role: string, search?: string) => {
+    let filtered = role === 'all' 
+      ? users.filter(u => u.id !== user?.id) 
+      : users.filter(u => getUserRole(u.id) === role && u.id !== user?.id);
+    if (search) {
+      const term = search.toLowerCase();
+      filtered = filtered.filter(u => 
+        (u.first_name?.toLowerCase().includes(term)) ||
+        (u.last_name?.toLowerCase().includes(term)) ||
+        (u.email?.toLowerCase().includes(term)) ||
+        (u.case_number?.toLowerCase().includes(term)) ||
+        (`${u.first_name || ''} ${u.last_name || ''}`.toLowerCase().includes(term))
+      );
+    }
+    return filtered;
+  };
+
+  const caseCopy = useGroupDetailsContent();
+  const assignments = createAssignmentLookup(users, userRoles, myGroup ? [myGroup] : [], t('customerDetail.unassigned'), caseCopy.notAvailable);
+  const agentCodes = useAgentCaseCodes(filterUsersByRole('agent').map(agent => agent.id));
+
+  if (loading || !isGroupAdmin) return <RouteStatus />;
+
+  const roleColors: Record<string, string> = {
+    admin: 'bg-red-500/20 text-red-400 border-red-500/30',
+    group_admin: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
+    supervisor: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
+    agent: 'bg-white/10 text-neutral-300 border-white/20',
+    user: 'bg-gray-500/20 text-gray-400 border-gray-500/30'
+  };
+
+  const statusColors: Record<string, string> = {
+    active: 'bg-green-500/20 text-green-400 border-green-500/30',
+    inactive: 'bg-gray-500/20 text-gray-400 border-gray-500/30',
+    invalid_language: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
+    suspended: 'bg-red-500/20 text-red-400 border-red-500/30'
+  };
+
+  const groups = myGroup ? [myGroup] : [];
+
+  return (
+    <StaffDashboardLayout
+      role="group_admin"
+      title={t('groupAdmin.title')}
+      subtitle={t('groupAdmin.subtitle')}
+      groupName={myGroup?.name}
+      onRefresh={handleRefresh}
+      isLoading={loadingData}
+      headerActions={
+        <div className="flex items-center gap-2">
+          <MFASetupDialog />
+          {myGroup && (
+            <CreateClientDialog
+              agents={users.filter(u => getUserRole(u.id) === 'agent')}
+              defaultGroupId={myGroup.id}
+              onSuccess={fetchData}
+            />
+          )}
+        </div>
+      }
+    >
+      {/* Pending Transactions Card - at the top */}
+      {myGroup && (
+        <div className="mb-6">
+          <PendingTransactions groupId={myGroup.id} className="bg-card border-border" />
+        </div>
+      )}
+
+      {!myGroup ? (
+        <Card className="bg-card border-border">
+          <CardContent className="py-12 text-center">
+            <p className="text-muted-foreground">{t('groupAdmin.noGroupAssigned')}</p>
+          </CardContent>
+        </Card>
+      ) : (
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="w-full justify-start bg-card border border-border rounded-lg p-1 mb-6 flex-wrap h-auto gap-1">
+            <TabsTrigger value="customers" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+              <Users className="w-4 h-4 mr-2" /> {t('admin.customers')}
+            </TabsTrigger>
+            <TabsTrigger value="agents" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+              <Users className="w-4 h-4 mr-2" /> {t('admin.agents')}
+            </TabsTrigger>
+            <TabsTrigger value="supervisors" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+              <UserCog className="w-4 h-4 mr-2" /> {t('admin.supervisors')}
+            </TabsTrigger>
+            <TabsTrigger value="ip-whitelist" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+              <Globe className="w-4 h-4 mr-2" /> {t('admin.ipWhitelist')}
+            </TabsTrigger>
+            <TabsTrigger value="sessions" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+              <Activity className="w-4 h-4 mr-2" /> Sessions
+            </TabsTrigger>
+            <TabsTrigger value="password-resets" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+              <Key className="w-4 h-4 mr-2" /> {t('admin.passwordResets')}
+            </TabsTrigger>
+          </TabsList>
+
+          {/* Customers Tab */}
+          <TabsContent value="customers">
+            <Card className="bg-card border-border">
+              <CardHeader className="border-b border-border flex-row items-center justify-between">
+                <CardTitle className="text-foreground flex items-center gap-2">
+                  {t('admin.customers')} <Badge variant="secondary">{filterUsersByRole('user', customerSearch).length}</Badge>
+                </CardTitle>
+                <div className="relative w-full sm:w-64">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    placeholder={t('common.search') || 'Search clients...'}
+                    value={customerSearch}
+                    onChange={(e) => setCustomerSearch(e.target.value)}
+                    className="pl-9 h-9"
+                  />
+                </div>
+              </CardHeader>
+              <CardContent className="p-0">
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="border-border">
+                        <TableHead>{t('admin.fullName')}</TableHead>
+                        <TableHead className="hidden sm:table-cell">{t('common.email')}</TableHead>
+                        <TableHead>{t('admin.caseNumber')}</TableHead>
+                        <ClientAssignmentHeaders />
+                        <TableHead className="hidden md:table-cell">{t('admin.lastLogin')}</TableHead>
+                        <TableHead>{t('common.status')}</TableHead>
+                        <TableHead className="text-right">{t('common.actions')}</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filterUsersByRole('user', customerSearch).map((u) => (
+                        <TableRow key={u.id} className="border-border">
+                          <TableCell className="font-medium">
+                            {u.first_name || u.last_name ? `${u.first_name || ''} ${u.last_name || ''}`.trim() : 'N/A'}<AssignmentSummary names={assignments.client(u)} />
+                          </TableCell>
+                          <TableCell className="text-muted-foreground hidden sm:table-cell">{u.email || '-'}</TableCell>
+                          <TableCell className="font-mono text-sm">{u.case_number || '-'}</TableCell>
+                          <ClientAssignmentCells names={assignments.client(u)} />
+                          <TableCell className="text-muted-foreground hidden md:table-cell">
+                            {u.last_login ? new Date(u.last_login).toLocaleString() : '-'}
+                          </TableCell>
+                          <TableCell>
+                            <Select value={u.status || 'active'} onValueChange={(v) => handleStatusChange(u.id, v)}>
+                              <SelectTrigger className="w-28 h-8"><SelectValue /></SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="active">{t('common.active')}</SelectItem>
+                                <SelectItem value="inactive">{t('common.inactive')}</SelectItem>
+                                <SelectItem value="suspended">{t('common.suspended')}</SelectItem>
+                                <SelectItem value="invalid_language">{t('common.invalidLanguage')}</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex gap-2 justify-end">
+                              <ChangeClientCaseNumberDialog customerId={u.id} customerName={`${u.first_name || ''} ${u.last_name || ''}`.trim() || u.email || 'Client'} caseNumber={u.case_number} onSuccess={() => void fetchData()} />
+                          <CreateNotificationDialog userId={u.id} userName={`${u.first_name || ''} ${u.last_name || ''}`.trim() || 'User'}>
+                                <Button size="sm" variant="outline"><Bell className="h-4 w-4" /></Button>
+                              </CreateNotificationDialog>
+                              <Button size="sm" variant="outline" onClick={() => navigate(`/customer/${u.id}`)}>{t('common.view')}</Button>
+                              <Select value={getUserRole(u.id)} onValueChange={(v) => handleRoleChange(u.id, v)}>
+                                <SelectTrigger className="w-28 h-8"><SelectValue /></SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="user">User</SelectItem>
+                                  <SelectItem value="agent">Agent</SelectItem>
+                                  <SelectItem value="supervisor">Supervisor</SelectItem>
+                                </SelectContent>
+                              </Select>
+                              <DeleteUserDialog
+                                userId={u.id}
+                                userName={`${u.first_name || ''} ${u.last_name || ''}`.trim() || u.email || 'User'}
+                                onSuccess={fetchData}
+                              />
+
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                      {filterUsersByRole('user', customerSearch).length === 0 && (
+                        <TableRow><TableCell colSpan={9} className="text-center py-8 text-muted-foreground">{t('admin.noCustomers')}</TableCell></TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Agents Tab */}
+          <TabsContent value="agents">
+            <Card className="bg-card border-border">
+              <CardHeader className="border-b border-border flex-row items-center justify-between">
+                <CardTitle className="text-foreground flex items-center gap-2">
+                  {t('admin.agents')} <Badge variant="secondary">{filterUsersByRole('agent').length}</Badge>
+                </CardTitle>
+                <div className="flex gap-2">
+                  <BulkAssignAgentsDialog
+                    agents={filterUsersByRole('agent').map(u => ({
+                      id: u.id,
+                      first_name: u.first_name,
+                      last_name: u.last_name,
+                      email: u.email,
+                      username: u.username,
+                    }))}
+                    supervisors={filterUsersByRole('supervisor').map(u => ({
+                      id: u.id,
+                      first_name: u.first_name,
+                      last_name: u.last_name,
+                      email: u.email,
+                    }))}
+                    onSuccess={fetchData}
+                  />
+                  <CreateUserDialog groups={groups} supervisors={filterUsersByRole('supervisor')} roleType="agent" onSuccess={fetchData} />
+                </div>
+              </CardHeader>
+              <CardContent className="p-0">
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="border-border">
+                        <TableHead>{t('admin.fullName')}</TableHead>
+                    <TableHead className="hidden lg:table-cell">{t('common.email')}</TableHead>
+                        <TableHead className="hidden sm:table-cell">{t('admin.username')}</TableHead>
+                        <TableHead className="hidden md:table-cell">{t('admin.phone')}</TableHead>
+                        <TableHead>{t('common.status')}</TableHead>
+                        <TableHead className="hidden lg:table-cell">{t('admin.group')}</TableHead>
+                        <TableHead>{t('hierarchy.assignedSupervisor')}</TableHead>
+                    <TableHead>{caseCopy.agentCaseCode}</TableHead>
+                    <TableHead>{t('admin.assignedClients')}</TableHead>
+                        <TableHead className="text-right">{t('common.actions')}</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filterUsersByRole('agent').map((u) => (
+                        <TableRow key={u.id} className="border-border">
+                          <TableCell className="font-medium"><AgentClientsDialog agentId={u.id} groupId={u.group_id} agentName={`${u.first_name || ''} ${u.last_name || ''}`.trim() || u.email || 'Agent'}>
+                            <Button variant="link" className="h-auto whitespace-normal p-0 text-left">{`${u.first_name || ''} ${u.last_name || ''}`.trim() || u.email || 'Agent'}</Button>
+                          </AgentClientsDialog><p className="mt-1 break-all text-xs font-normal text-muted-foreground lg:hidden">{u.email || '-'}</p><AssignmentSummary names={assignments.agent(u)} /></TableCell>
+                          <TableCell className="hidden max-w-[18rem] break-all text-muted-foreground lg:table-cell">{u.email || '-'}</TableCell>
+                      <TableCell className="text-muted-foreground hidden sm:table-cell">{u.username || '-'}</TableCell>
+                          <TableCell className="text-muted-foreground hidden md:table-cell">{u.phone || '-'}</TableCell>
+                          <TableCell><Badge className={`${statusColors[u.status || 'active']} border`}>{(u.status || 'active').toUpperCase()}</Badge></TableCell>
+                          <TableCell className="hidden lg:table-cell">{assignments.agent(u).group}</TableCell>
+                          <TableCell><AgentSupervisorSelect agent={u} supervisors={filterUsersByRole('supervisor')} onSuccess={fetchData} /></TableCell>
+                          <TableCell><AgentCaseCode code={agentCodes.data?.get(u.id)} loading={agentCodes.isPending} error={agentCodes.isError} onRetry={() => void agentCodes.refetch()} /></TableCell>
+                      <TableCell>
+                            <AgentClientsDialog
+                              agentId={u.id}
+                              groupId={u.group_id}
+                              agentName={`${u.first_name || ''} ${u.last_name || ''}`.trim() || u.email || 'Agent'}
+                              count={users.filter((customer) => customer.assigned_to === u.id).length}
+                            />
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex gap-2 justify-end">
+                              <CreateNotificationDialog userId={u.id} userName={`${u.first_name || ''} ${u.last_name || ''}`.trim() || 'Agent'}>
+                                <Button size="sm" variant="outline"><Bell className="h-4 w-4" /></Button>
+                              </CreateNotificationDialog>
+                              <EditAgentDialog agent={u} groups={groups} supervisors={filterUsersByRole('supervisor')} onSuccess={fetchData} />
+                              <EditStaffCredentialsDialog staff={u} onSuccess={fetchData} />
+                              <Button size="sm" variant="outline" onClick={() => navigate(`/customer/${u.id}`)}>{t('common.view')}</Button>
+                              <Button size="sm" variant="destructive" onClick={() => handleRemoveRole(u.id)}><Trash2 className="h-4 w-4" /></Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                      {filterUsersByRole('agent').length === 0 && (
+                        <TableRow><TableCell colSpan={10} className="text-center py-8 text-muted-foreground">{t('admin.noAgents')}</TableCell></TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Supervisors Tab */}
+          <TabsContent value="supervisors">
+            <Card className="bg-card border-border">
+              <CardHeader className="border-b border-border flex-row items-center justify-between">
+                <CardTitle className="text-foreground flex items-center gap-2">
+                  {t('admin.supervisors')} <Badge variant="secondary">{filterUsersByRole('supervisor').length}</Badge>
+                </CardTitle>
+                <CreateUserDialog groups={groups} roleType="supervisor" onSuccess={fetchData} />
+              </CardHeader>
+              <CardContent className="p-0">
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="border-border">
+                        <TableHead>{t('admin.fullName')}</TableHead>
+                    <TableHead className="hidden lg:table-cell">{t('common.email')}</TableHead>
+                        <TableHead className="hidden sm:table-cell">{t('admin.username')}</TableHead>
+                        <TableHead className="hidden md:table-cell">{t('admin.phone')}</TableHead>
+                        <TableHead className="hidden md:table-cell">{t('admin.group')}</TableHead>
+                        <TableHead>{t('admin.agents')}</TableHead>
+                        <TableHead>{t('common.status')}</TableHead>
+                        <TableHead className="text-right">{t('common.actions')}</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filterUsersByRole('supervisor').map((u) => (
+                        <TableRow key={u.id} className="border-border">
+                          <TableCell className="font-medium"><SupervisorAgentsDialog supervisorId={u.id} supervisorName={`${u.first_name || ''} ${u.last_name || ''}`.trim() || u.email || 'Supervisor'} groupId={u.group_id} groupName={myGroup?.name || t('customerDetail.unassigned')} agents={filterUsersByRole('agent')} clients={filterUsersByRole('user')}>
+                            <Button variant="link" className="h-auto whitespace-normal p-0 text-left">{`${u.first_name || ''} ${u.last_name || ''}`.trim() || u.email || 'Supervisor'}</Button>
+                          </SupervisorAgentsDialog><p className="mt-1 break-all text-xs font-normal text-muted-foreground lg:hidden">{u.email || '-'}</p><p className="mt-1 text-xs font-normal text-muted-foreground md:hidden">{t('admin.group')}: {myGroup?.name || t('customerDetail.unassigned')}</p></TableCell>
+                          <TableCell className="hidden max-w-[18rem] break-all text-muted-foreground lg:table-cell">{u.email || '-'}</TableCell>
+                      <TableCell className="text-muted-foreground hidden sm:table-cell">{u.username || '-'}</TableCell>
+                          <TableCell className="text-muted-foreground hidden md:table-cell">{u.phone || '-'}</TableCell>
+                          <TableCell className="hidden md:table-cell">{myGroup?.name || t('customerDetail.unassigned')}</TableCell>
+                          <TableCell><SupervisorAgentsDialog supervisorId={u.id} supervisorName={`${u.first_name || ''} ${u.last_name || ''}`.trim() || u.email || 'Supervisor'} groupId={u.group_id} groupName={myGroup?.name || t('customerDetail.unassigned')} agents={filterUsersByRole('agent')} clients={filterUsersByRole('user')} /></TableCell>
+                          <TableCell><Badge className={`${statusColors[u.status || 'active']} border`}>{(u.status || 'active').toUpperCase()}</Badge></TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex gap-2 justify-end">
+                              <CreateNotificationDialog userId={u.id} userName={`${u.first_name || ''} ${u.last_name || ''}`.trim() || 'Supervisor'}>
+                                <Button size="sm" variant="outline"><Bell className="h-4 w-4" /></Button>
+                              </CreateNotificationDialog>
+                              <EditStaffNameDialog
+                                userId={u.id}
+                                currentFirstName={u.first_name}
+                                currentLastName={u.last_name}
+                                currentUsername={u.username}
+                                onSuccess={fetchData}
+                              />
+                              <EditStaffCredentialsDialog staff={u} onSuccess={fetchData} />
+                              <Button size="sm" variant="outline" onClick={() => navigate(`/customer/${u.id}`)}>{t('common.view')}</Button>
+                              <Button size="sm" variant="destructive" onClick={() => handleRemoveRole(u.id)}><Trash2 className="h-4 w-4" /></Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                      {filterUsersByRole('supervisor').length === 0 && (
+                        <TableRow><TableCell colSpan={8} className="text-center py-8 text-muted-foreground">{t('admin.noSupervisors')}</TableCell></TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* IP Whitelist Tab */}
+          <TabsContent value="ip-whitelist">
+            <Card className="bg-card border-border">
+              <CardHeader className="border-b border-border flex-row items-center justify-between">
+                <CardTitle className="text-foreground flex items-center gap-2">
+                  {t('admin.ipWhitelist')} <Badge variant="secondary">{ipWhitelist.length}</Badge>
+                </CardTitle>
+                {myGroup && <CreateIPWhitelistDialog onSuccess={fetchData} groupId={myGroup.id} />}
+              </CardHeader>
+              <CardContent className="p-0">
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="border-border">
+                        <TableHead>{t('admin.ipAddress')}</TableHead>
+                        <TableHead>{t('admin.ipVersion')}</TableHead>
+                        <TableHead className="hidden sm:table-cell">{t('admin.subject')}</TableHead>
+                        <TableHead>{t('admin.action')}</TableHead>
+                        <TableHead className="text-right">{t('common.actions')}</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {ipWhitelist.map((ip) => (
+                        <TableRow key={ip.id} className="border-border">
+                          <TableCell className="font-mono">{ip.ip_address}</TableCell>
+                          <TableCell><Badge variant="outline">{ip.ip_version}</Badge></TableCell>
+                          <TableCell className="text-muted-foreground hidden sm:table-cell">{ip.subject}</TableCell>
+                          <TableCell>
+                            <Badge className={ip.action === 'ALLOW' ? 'bg-green-500/20 text-green-400 border-green-500/30 border' : 'bg-red-500/20 text-red-400 border-red-500/30 border'}>
+                              {ip.action}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="text-right flex gap-2 justify-end">
+                            <EditIPWhitelistDialog entry={ip} onSuccess={fetchData} />
+                            <Button size="sm" variant="destructive" onClick={() => handleDeleteIPRule(ip.id)}><Trash2 className="h-4 w-4" /></Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                      {ipWhitelist.length === 0 && (
+                        <TableRow><TableCell colSpan={5} className="text-center py-8 text-muted-foreground">{t('admin.noIPRules')}</TableCell></TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Staff Sessions Tab */}
+          <TabsContent value="sessions">
+            <Card className="bg-card border-border">
+              <CardHeader className="border-b border-border">
+                <CardTitle className="text-foreground flex items-center gap-2">
+                  Staff Sessions <Badge variant="secondary">{staffSessions.length}</Badge>
+                </CardTitle>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Monitor login activity for staff members in your group
+                </p>
+              </CardHeader>
+              <CardContent className="p-0">
+                {loadingSessions ? (
+                  <div className="py-8 text-center text-muted-foreground">Loading sessions...</div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="border-border">
+                          <TableHead>Staff Member</TableHead>
+                          <TableHead>Role</TableHead>
+                          <TableHead className="hidden sm:table-cell">IP Address</TableHead>
+                          <TableHead className="hidden md:table-cell">Login Time</TableHead>
+                          <TableHead>Status</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {staffSessions.map((session) => (
+                          <TableRow key={session.id} className="border-border">
+                            <TableCell className="font-medium">{session.user_name}</TableCell>
+                            <TableCell>
+                              <Badge className={`${roleColors[session.user_role || 'user']} border`}>
+                                {(session.user_role || 'user').toUpperCase()}
+                              </Badge>
+                            </TableCell>
+                            <TableCell className="font-mono text-muted-foreground hidden sm:table-cell">
+                              {session.login_ip || '-'}
+                            </TableCell>
+                            <TableCell className="text-muted-foreground hidden md:table-cell">
+                              {session.login_time ? new Date(session.login_time).toLocaleString() : '-'}
+                            </TableCell>
+                            <TableCell>
+                              <Badge className={session.is_active 
+                                ? 'bg-green-500/20 text-green-400 border-green-500/30 border' 
+                                : 'bg-gray-500/20 text-gray-400 border-gray-500/30 border'
+                              }>
+                                {session.is_active ? 'ACTIVE' : 'ENDED'}
+                              </Badge>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                        {staffSessions.length === 0 && (
+                          <TableRow>
+                            <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
+                              No staff sessions found
+                            </TableCell>
+                          </TableRow>
+                        )}
+                      </TableBody>
+                    </Table>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Password Resets Tab */}
+          <TabsContent value="password-resets">
+            <PasswordResetRequests />
+          </TabsContent>
+        </Tabs>
+      )}
+    </StaffDashboardLayout>
+  );
+};
+
+export default GroupAdmin;

@@ -1,0 +1,32 @@
+{
+  "date": "2026-11-25",
+  "behavior": "Client animation starts automatically when CRM sets case_phase to review and loops until CRM sets completed or submitted. No client playback controls. Reduced-motion preferences do not stop this requested workflow.",
+  "validation": {
+    "crmRealtimeLifecycleTests": 2,
+    "coveredTransitions": [
+      "submitted to review",
+      "active review on overview navigation and reload",
+      "expired investigation window while CRM review stays active",
+      "review to completed",
+      "completed to review",
+      "review to submitted"
+    ],
+    "browserChecks": 25,
+    "languages": 4,
+    "viewportWidths": [
+      320,
+      390,
+      1024,
+      1760
+    ],
+    "translationRegressionTests": 5,
+    "typescript": "passed",
+    "productionBuild": "passed",
+    "crmFilesVerifiedUnchanged": 94,
+    "backendWrites": 0
+  },
+  "supersedes": [
+    "transaction-animation-playback-2026-11-25-evidence.json"
+  ],
+  "deploymentPerformed": false
+}

@@ -1,0 +1,22 @@
+{
+  "project_ref": "pbfdnjtkeveqeukbrfmk",
+  "migration": "20261125093510_transfer_clients_by_case_number.sql",
+  "applied": true,
+  "deployed_body_matches": true,
+  "security_definer": true,
+  "search_path": [
+    "search_path=\"\""
+  ],
+  "source_sha256": "21fb9508aef11fad82085e0780aebb729d1d0bdd7f5c6f86af4df0878083f0d0",
+  "live_transaction_verification": [
+    {
+      "case_transfer_verified": true,
+      "writes_rolled_back": true
+    }
+  ],
+  "remaining_temporary_accounts": 0,
+  "backend_tests_passed": 196,
+  "browser_tests_passed": 9,
+  "frontend_deployed": false,
+  "checked_at_utc": "2026-11-25T09:35:11.882303+00:00"
+}

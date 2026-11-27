@@ -1,0 +1,419 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+ * User Portal global design system — inherits the /showcase language.
+ * All colors MUST be HSL. Tokens drive shadcn + tailwind.
+ * ============================================================ */
+
+@layer base {
+  :root {
+    /* Shared charcoal palette applies before route effects and inside portals. */
+    color-scheme: dark;
+    --portal-canvas-deep: 220 10% 5%;
+    --portal-canvas: 220 9% 7%;
+    --portal-panel: 220 8% 11%;
+    --portal-panel-raised: 220 8% 15%;
+    --portal-border: 220 9% 24%;
+    --portal-border-strong: 220 10% 32%;
+    --portal-ink-dim: 220 10% 55%;
+    --portal-ink-muted: 220 10% 67%;
+    --portal-ink-secondary: 220 12% 76%;
+    --portal-ink-soft: 220 14% 85%;
+    --portal-ink: 220 14% 94%;
+    --portal-accent: 216 88% 76%;
+    --portal-accent-hover: 216 90% 82%;
+    --portal-crypto-accent: 258 65% 78%;
+    --background: 220 9% 7%;
+    --foreground: 220 14% 94%;
+
+    --card: 220 8% 11%;
+    --card-foreground: 220 14% 94%;
+
+    --popover: 220 8% 13%;
+    --popover-foreground: 220 14% 94%;
+
+    --primary: 216 88% 76%;
+    --primary-foreground: 220 22% 11%;
+
+    --secondary: 220 8% 17%;
+    --secondary-foreground: 220 14% 94%;
+
+    --muted: 220 8% 16%;
+    --muted-foreground: 220 10% 67%;
+
+    --accent: 220 15% 20%;
+    --accent-foreground: 216 88% 82%;
+
+    --destructive: 0 75% 70%;
+    --destructive-foreground: 220 22% 11%;
+
+    --success: 151 45% 62%;
+    --success-foreground: 220 22% 11%;
+
+    --border: 220 9% 24%;
+    --input: 220 9% 30%;
+    --ring: 216 88% 76%;
+
+    --radius: 0.75rem;
+
+    /* Brand accent */
+    --gold: 216 88% 76%;
+    --gold-foreground: 220 22% 11%;
+
+    /* Gradients / shadows */
+    --glow-primary: 0 0% 100%;
+    --gradient-hero: linear-gradient(135deg, hsl(0 0% 2%) 0%, hsl(0 0% 9%) 50%, hsl(0 0% 2%) 100%);
+    --gradient-shiny: linear-gradient(
+      to right,
+      #737373 0%, #d4d4d4 15%, #ffffff 35%, #a3a3a3 50%,
+      #ffffff 65%, #d4d4d4 85%, #737373 100%
+    );
+    --shadow-glow: 0 0 80px hsl(0 0% 100% / 0.12);
+    --shadow-glow-gold: 0 0 60px hsl(0 0% 100% / 0.1);
+    --shadow-card: 0 8px 24px hsl(0 0% 0% / 0.16);
+    --shadow-glass: 0 10px 30px hsl(0 0% 0% / 0.18), inset 0 1px 0 hsl(0 0% 100% / 0.03);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html, body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+    body {
+    @apply bg-background text-foreground;
+    background-image: none;
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    background: hsl(0 0% 100% / 0.3);
+  }
+}
+
+@layer components {
+  /* Shared surfaces also cover dialogs rendered through a portal. */
+  .rounded-lg.border.bg-card,
+  [data-slot="card"] {
+    background: hsl(var(--card));
+    border-color: hsl(var(--border));
+    box-shadow: var(--shadow-card);
+  }
+
+  /* Radix Dialog / Sheet / Popover surfaces — pick up the same treatment */
+  [role="dialog"] > div[class*="bg-background"],
+  [data-radix-popper-content-wrapper] > * {
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+}
+
+@layer utilities {
+  /* Ticker scroll */
+  @keyframes scroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .animate-scroll { animation: scroll 30s linear infinite; }
+  .animate-scroll:hover { animation-play-state: paused; }
+
+  /* Shiny brand-gradient text (mirrors showcase) */
+  @keyframes shiny {
+    0%   { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+  .animate-shiny {
+    background-size: 200% auto;
+    animation: shiny 6s linear infinite;
+  }
+  .text-shiny {
+    background-image: var(--gradient-shiny);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: shiny 8s linear infinite;
+  }
+
+  /* Liquid glass surface */
+  .liquid-glass {
+    background: linear-gradient(135deg, hsl(0 0% 100% / 0.04), hsl(0 0% 100% / 0.01));
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid hsl(0 0% 100% / 0.08);
+    box-shadow: var(--shadow-glass);
+  }
+
+  .gold-ring {
+    box-shadow: 0 0 0 1px hsl(0 0% 100% / 0.28), var(--shadow-glow-gold);
+  }
+
+  /* Slim dashboard scrollbar that blends into the dark shell. */
+  .themed-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted-foreground) / 0.28) transparent;
+  }
+
+  .themed-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .themed-scrollbar::-webkit-scrollbar-track,
+  .themed-scrollbar::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  .themed-scrollbar::-webkit-scrollbar-thumb {
+    min-height: 40px;
+    border: 2px solid transparent;
+    border-radius: 9999px;
+    background: hsl(var(--muted-foreground) / 0.28);
+    background-clip: padding-box;
+  }
+
+  .themed-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.48);
+    background-clip: padding-box;
+  }
+
+  .themed-scrollbar::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+}
+
+/* Keep staff CRM pages static, including menus and dialogs portalled to body.
+   Override component utilities and inline transition durations consistently. */
+body[data-interface="crm"],
+body[data-interface="crm"] *,
+body[data-interface="crm"] *::before,
+body[data-interface="crm"] *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Request progress remains visible while data loads or changes are saved. */
+body[data-interface="crm"] .animate-spin {
+  animation: spin 1s linear infinite !important;
+}
+
+/* Keep the fixed navigation readable without a background blur layer. */
+body[data-interface="crm"] nav {
+  background-color: hsl(var(--background));
+}
+
+/* ============================================================
+ * Shared public, customer, and staff CRM product theme.
+ * Scoped at body level so portalled menus and dialogs inherit the palette.
+ * ============================================================ */
+body[data-surface="brand"],
+body[data-surface="crm"] {
+  color-scheme: dark;
+  --background: 220 9% 7%;
+  --foreground: 220 14% 94%;
+  --card: 220 8% 11%;
+  --card-foreground: 220 14% 94%;
+  --popover: 220 8% 13%;
+  --popover-foreground: 220 14% 94%;
+  --primary: 216 88% 76%;
+  --primary-foreground: 220 22% 11%;
+  --secondary: 220 8% 17%;
+  --secondary-foreground: 220 14% 94%;
+  --muted: 220 8% 16%;
+  --muted-foreground: 220 10% 67%;
+  --accent: 220 15% 20%;
+  --accent-foreground: 216 88% 82%;
+  --border: 220 9% 24%;
+  --input: 220 9% 30%;
+  --ring: 216 88% 76%;
+  --gold: 216 88% 76%;
+  --gold-foreground: 220 22% 11%;
+  --success: 151 45% 62%;
+  --radius: 1rem;
+  --shadow-glow: 0 0 80px hsl(216 55% 29% / 0.10);
+  --shadow-glow-gold: 0 16px 42px hsl(216 55% 29% / 0.12);
+  --shadow-card: 0 8px 24px hsl(0 0% 0% / 0.16);
+  --shadow-glass: 0 10px 30px hsl(0 0% 0% / 0.18), inset 0 1px 0 hsl(0 0% 100% / 0.03);
+  color: hsl(var(--foreground));
+  background: hsl(var(--background));
+  background-attachment: fixed;
+}
+
+body[data-surface="brand"] .rounded-lg.border.bg-card:not([role="dialog"]),
+body[data-surface="brand"] [data-slot="card"],
+body[data-surface="crm"] .rounded-lg.border.bg-card:not([role="dialog"]),
+body[data-surface="crm"] [data-slot="card"] {
+  border-color: hsl(var(--border) / 0.82);
+  background: hsl(var(--card));
+  box-shadow: var(--shadow-card);
+}
+
+body[data-surface="brand"] :is(input, textarea, select),
+body[data-surface="crm"] :is(input, textarea, select) {
+  caret-color: hsl(var(--primary));
+}
+
+body[data-surface="brand"] ::selection,
+body[data-surface="crm"] ::selection {
+  color: hsl(var(--primary-foreground));
+  background: hsl(var(--primary));
+}
+
+/* Keep CRM status indicators readable on charcoal surfaces. */
+body[data-interface="crm"] :is(.text-red-300, .text-red-400) { color: hsl(0 90% 81%); }
+body[data-interface="crm"] :is(.text-green-300, .text-green-400) { color: hsl(var(--success)); }
+body[data-interface="crm"] :is(.text-yellow-300, .text-yellow-400) { color: hsl(48 90% 75%); }
+body[data-interface="crm"] :is(.text-amber-300, .text-amber-400) { color: hsl(40 90% 75%); }
+body[data-interface="crm"] :is(.text-purple-300, .text-purple-400) { color: hsl(270 90% 83%); }
+body[data-interface="crm"] :is(.text-orange-300, .text-orange-400) { color: hsl(28 90% 77%); }
+body[data-interface="crm"] :is(.text-emerald-300, .text-emerald-400) { color: hsl(var(--success)); }
+body[data-interface="crm"] :is(.text-gray-400, .text-slate-400) { @apply text-muted-foreground; }
+body[data-interface="crm"] .text-neutral-300 { @apply text-primary; }
+body[data-interface="crm"] .bg-white\/10 { @apply bg-primary/10; }
+body[data-interface="crm"] .border-white\/20 { @apply border-primary/20; }
+
+body[data-interface="client"],
+.client-portal {
+  --background: 220 9% 7%;
+  --foreground: 220 14% 94%;
+  --card: 220 8% 11%;
+  --card-foreground: 220 14% 94%;
+  --popover: 220 8% 13%;
+  --popover-foreground: 220 14% 94%;
+  --primary: 216 88% 76%;
+  --primary-foreground: 220 22% 11%;
+  --secondary: 220 8% 17%;
+  --secondary-foreground: 220 14% 94%;
+  --muted: 220 8% 16%;
+  --muted-foreground: 220 10% 67%;
+  --accent: 220 15% 20%;
+  --accent-foreground: 216 88% 82%;
+  --border: 220 9% 24%;
+  --input: 220 9% 30%;
+  --ring: 216 88% 76%;
+  --gold: 216 88% 76%;
+  --gold-foreground: 220 22% 11%;
+  --success: 151 45% 62%;
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+}
+
+body[data-interface="client"] {
+  color: hsl(var(--foreground));
+  background: hsl(var(--background));
+  background-attachment: fixed;
+  overflow-x: clip;
+}
+
+body[data-interface="client"] ::selection {
+  color: hsl(var(--primary-foreground));
+  background: hsl(var(--primary));
+}
+
+.client-portal::before {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  content: "";
+  pointer-events: none;
+  background:
+    linear-gradient(hsl(216 55% 29% / 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(216 55% 29% / 0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(to bottom, black, transparent 78%);
+}
+
+.client-portal .text-shiny {
+  color: hsl(var(--foreground));
+  background: none;
+  -webkit-text-fill-color: currentColor;
+}
+
+.client-portal .rounded-lg.border.bg-card {
+  border-radius: 1rem;
+}
+
+.client-portal .client-panel {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid hsl(var(--border) / 0.92);
+  border-radius: 1rem;
+  background: hsl(var(--card) / 0.9);
+  box-shadow: 0 16px 38px hsl(215 30% 24% / 0.09);
+}
+
+.client-portal .client-panel.client-panel-grid {
+  background: hsl(var(--border));
+}
+
+.client-portal :is(main, main > *, section, article, form, fieldset) {
+  min-width: 0;
+}
+
+.client-portal :is(input, textarea, select, button[role="combobox"]) {
+  max-width: 100%;
+}
+
+.client-portal :is(img, video, canvas, svg) {
+  max-width: 100%;
+}
+
+body[data-surface="brand"] .client-portal .rounded-lg.border.bg-card,
+body[data-surface="brand"] .client-portal [data-slot="card"] {
+  border-color: hsl(var(--border) / 0.9);
+  background: hsl(var(--card));
+  box-shadow: 0 16px 38px hsl(216 45% 22% / 0.09);
+  color: hsl(var(--foreground));
+}
+
+.client-portal main :is(h1, h2, h3) {
+  text-wrap: balance;
+}
+
+.client-portal main > .space-y-6,
+.client-portal main > .w-full {
+  animation: client-enter .45s ease-out both;
+}
+
+.client-portal :is(input, textarea, button[role="combobox"]) {
+  border-radius: .85rem;
+}
+
+.client-portal table thead {
+  background: hsl(var(--muted) / .42);
+}
+
+.client-portal table tbody tr {
+  border-color: hsl(var(--border) / .65);
+  transition: background-color .2s ease;
+}
+
+.client-portal table tbody tr:hover {
+  background: hsl(var(--primary) / .035);
+}
+
+@keyframes client-enter {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .client-portal main > .space-y-6,
+  .client-portal main > .w-full { animation: none; }
+}

@@ -1,0 +1,137 @@
+{
+  "targetRef": "ccqotqrmzsnizychoggp",
+  "completedAt": "2026-11-25T11:08:54.729Z",
+  "action": "Keep only the administrator; remove copied accounts and business data",
+  "keptAdministrator": {
+    "id": "d39f60cf-f92f-4580-b1c7-8a81c3c4cc7a",
+    "email": "admin@gmail.com",
+    "credentialsUnchanged": true
+  },
+  "deletedAccounts": 90,
+  "after": {
+    "roles": [
+      "admin"
+    ],
+    "users": 1,
+    "profiles": 1,
+    "sessions": 0,
+    "identities": 1,
+    "refresh_tokens": 0
+  },
+  "applicationTables": [
+    {
+      "table_name": "account_auth_attempts",
+      "rows": 0
+    },
+    {
+      "table_name": "agent_signup_codes",
+      "rows": 0
+    },
+    {
+      "table_name": "case_timeline",
+      "rows": 0
+    },
+    {
+      "table_name": "client_payment_details",
+      "rows": 0
+    },
+    {
+      "table_name": "crypto_balance_adjustments",
+      "rows": 0
+    },
+    {
+      "table_name": "customer_balances",
+      "rows": 0
+    },
+    {
+      "table_name": "customer_notes",
+      "rows": 0
+    },
+    {
+      "table_name": "groups",
+      "rows": 0
+    },
+    {
+      "table_name": "ip_validation_logs",
+      "rows": 0
+    },
+    {
+      "table_name": "ip_whitelist",
+      "rows": 0
+    },
+    {
+      "table_name": "kyc_submissions",
+      "rows": 0
+    },
+    {
+      "table_name": "messages",
+      "rows": 0
+    },
+    {
+      "table_name": "notifications",
+      "rows": 0
+    },
+    {
+      "table_name": "password_reset_requests",
+      "rows": 0
+    },
+    {
+      "table_name": "portfolio_items",
+      "rows": 0
+    },
+    {
+      "table_name": "profiles",
+      "rows": 1
+    },
+    {
+      "table_name": "promocodes",
+      "rows": 0
+    },
+    {
+      "table_name": "recovery_funds",
+      "rows": 0
+    },
+    {
+      "table_name": "role_permission_changes",
+      "rows": 0
+    },
+    {
+      "table_name": "role_permissions",
+      "rows": 0
+    },
+    {
+      "table_name": "transaction_requests",
+      "rows": 0
+    },
+    {
+      "table_name": "user_mfa",
+      "rows": 0
+    },
+    {
+      "table_name": "user_roles",
+      "rows": 1
+    },
+    {
+      "table_name": "user_sessions",
+      "rows": 0
+    },
+    {
+      "table_name": "watchlist_items",
+      "rows": 0
+    }
+  ],
+  "backendSetup": {
+    "tables": 25,
+    "buckets": 2,
+    "policies": 169,
+    "triggers": 38,
+    "functions": 67,
+    "migrations": 90
+  },
+  "edgeFunctions": {
+    "count": 21,
+    "allActive": true
+  },
+  "backup": "C:\\Users\\3\\AppData\\Local\\reczk2\\supabase-backups\\2026-11-25-ccqotqrmzsnizychoggp-105230\\before-admin-only-data.sql",
+  "sourceProjectUntouched": true
+}

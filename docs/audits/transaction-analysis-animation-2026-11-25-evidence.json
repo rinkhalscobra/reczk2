@@ -1,0 +1,43 @@
+{
+  "date": "2026-11-25",
+  "scope": "Client case-review animation, overview and case pages",
+  "features": [
+    "Animated banking and blockchain transaction routes",
+    "Scanning analysis hub and four-stage workflow",
+    "Selectable transaction sources and detailed review explanations",
+    "Scope-aware bank, blockchain and combined diagrams",
+    "Pause/resume and reduced-motion support",
+    "Localized English, French, German and Italian copy"
+  ],
+  "validation": {
+    "browserChecks": 25,
+    "widths": [
+      1760,
+      1024,
+      390,
+      320
+    ],
+    "languages": [
+      "en",
+      "fr",
+      "de",
+      "it"
+    ],
+    "pauseResume": "passed",
+    "animationProgression": "passed",
+    "reducedMotion": "passed",
+    "completedCaseFindings": "preserved",
+    "sourceAndWaveformOverlapChecks": "passed",
+    "translationRegressionTests": 5,
+    "typescript": "passed",
+    "productionBuild": "passed",
+    "crmFilesVerifiedUnchanged": 94,
+    "browserErrors": [],
+    "backendWrites": 0
+  },
+  "deploymentPerformed": false,
+  "artifacts": {
+    "desktop": "test-results/transaction-analysis/desktop-final.png",
+    "mobile": "test-results/transaction-analysis/mobile-final.png"
+  }
+}

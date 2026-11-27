@@ -1,0 +1,58 @@
+{
+  "project_ref": "pbfdnjtkeveqeukbrfmk",
+  "migration": {
+    "migration": {
+      "version": "20261112132035",
+      "name": "agent_signup_codes_and_admin_assignments"
+    },
+    "migration_count": 72,
+    "local_file": "supabase\\migrations\\20261112132035_agent_signup_codes_and_admin_assignments.sql",
+    "agent_code_coverage": {
+      "agents": 3,
+      "codes": 3,
+      "missing_codes": 0
+    }
+  },
+  "edge_function": {
+    "slug": "create-user",
+    "version_before": 1,
+    "version_after": 2,
+    "status": "ACTIVE",
+    "verify_jwt": true
+  },
+  "edge_source_matches": true,
+  "live_transaction_checks": {
+    "code_signup_assigns_agent": true,
+    "blank_signup_stays_unassigned": true,
+    "invalid_signup_is_atomic": true,
+    "new_agent_gets_code": true,
+    "admin_assignment_ignores_group": true,
+    "all_verification_records_rolled_back": true
+  },
+  "application_counts_before": {
+    "auth_users": 9,
+    "profiles": 9,
+    "roles": 5,
+    "cash_balances": 27,
+    "legacy_codes": 0,
+    "agent_codes": 3
+  },
+  "application_counts_after": {
+    "auth_users": 9,
+    "profiles": 9,
+    "roles": 5,
+    "cash_balances": 27,
+    "legacy_codes": 0,
+    "agent_codes": 3
+  },
+  "public_code_validation_valid_and_invalid": "passed",
+  "anonymous_code_enumeration_status": 401,
+  "unauthorized_create_user_status": 400,
+  "tests": {
+    "backend": 61,
+    "browser": 35,
+    "typescript": "passed",
+    "lint": "passed",
+    "production_build": "passed"
+  }
+}
